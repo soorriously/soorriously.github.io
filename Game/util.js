@@ -1,14 +1,14 @@
 function make2DArray(rows, cols) {
-  if (rows) {
-    let arr = new Array(cols);
+  if (cols) {
+    let arr = new Array(rows);
     for (let i = 0; i < arr.length; i++) {
-      arr[i] = new Array(rows);
+      arr[i] = new Array(cols);
     }
     return arr;
   }
-  let arr = new Array(cols);
+  let arr = new Array(rows);
   for (let i = 0; i < arr.length; i++) {
-    arr[i] = new Array(cols);
+    arr[i] = new Array(rows);
   }
   return arr;
 }

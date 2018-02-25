@@ -8,6 +8,3 @@ class Unit(){
   }
 
 }
-
-
-const unitTypes =
