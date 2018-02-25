@@ -59,6 +59,7 @@ class Map {
     // Whether or not to show the Tiles/Point
     this.showTiles = true;
     this.showPoints = true;
+
     for (let i = 0; i < this.tiles.length; i++) {
       for (let j = 0; j < this.tiles.length; j++) {
         this.tiles[i][j] = new Tile(this.TILE_SIZE, this);
@@ -82,17 +83,20 @@ class Map {
 
       }
     }
+
     for (let i = 0; i <= this.SIZE; i++) {
       for (let j = 0; j <= this.SIZE; j++) {
-        this.points[i][j] = new Point(j * this.TILE_SIZE, i * this.TILE_SIZE, this.TILE_SIZE / 4, this);
+        this.points[i][j] = new Point(this.TILE_SIZE / 4, this);
       }
     }
 
   }
 
   togglePoints(bool) {
-    this.showPoints = true;
+    if (typeof bool === "boolean") return this.showPoints = bool;
+    return this.showPoints = !this.showPoints;
   }
+
 
   setFocus(x, y) {
     //this.initOffset.set(this.tiles[y][x].pos);

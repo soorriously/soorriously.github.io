@@ -1,6 +1,6 @@
 class Point {
-  constructor(x, y, size, map) {
-    this.pos = createVector(x, y);
+  constructor(size, map) {
+    this.pos = createVector(0, 0);
     this.SIZE = size;
     this.map = map;
     this.settled = true;
