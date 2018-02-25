@@ -2,4 +2,4 @@
 SOMETHING IMPORTANT
 
 # SOMETHING UNIMPORTANT
-Go [here]("/Game")
+Go [here](/Game)
