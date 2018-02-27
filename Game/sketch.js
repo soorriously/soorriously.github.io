@@ -2,11 +2,11 @@
 let m;
 let house;
 
-function preload() {
-  house = loadImage("/Images/house.png", function() {
-    console.log("Done loading after " + floor(millis()) + "ms");
-  });
-}
+// function preload() {
+//   house = loadImage("/Images/house.png", function() {
+//     console.log("Done loading after " + floor(millis()) + "ms");
+//   });
+// }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);

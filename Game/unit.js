@@ -22,7 +22,7 @@ class Unit {
 
 const unitTypes = {
   "warrior": {
-    attack: 2
+    attack: 2,
     defense: 2
   }
 }

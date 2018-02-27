@@ -14,8 +14,10 @@ function make2DArray(rows, cols) {
 }
 
 function city(x, y, wh) {
-  rectMode(CENTER);
-  rect(x, y, wh, wh);
+  // rectMode(CENTER);
+  // rect(x, y, wh, wh);
+  ellipseMode(CENTER);
+  ellipse(x, y, wh, wh);
   // imageMode(CENTER);
   // image(house, x, y, wh, wh);
 }
