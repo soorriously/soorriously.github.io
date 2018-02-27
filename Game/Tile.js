@@ -1,5 +1,5 @@
 class Tile {
-  constructor(size, map) {
+  constructor(size, map, mapX, mapY) {
     this.reset(size, map);
   }
 
@@ -40,13 +40,22 @@ class Tile {
     else throw new Error("The input for setCol() must be a colour, or an array of length 1-4");
   }
 
-  reset(size, map) {
+  reset(size, map, mapX, mapY) {
     this.pos = createVector(0, 0);
     this.map = map;
     this.SIZE = size;
     this.hasFocus = false;
-    this.col;
+    this.col = randomCol();
+    this.unit = null;
+    this.mapPos = {
+      x: mapX,
+      y: mapY
+    }
     // this.col = color(random(0, 255), random(0, 255), random(0, 255));
+  }
+
+  setUnit(unit) {
+    this.unit = unit;
   }
 
 }

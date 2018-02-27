@@ -1,25 +1,26 @@
 // Map variable
-let map;
+let m;
 let house;
 
 function preload() {
-  house = loadImage("./Images/house.png");
+  house = loadImage("/Images/house.png", function() {
+    console.log("Done loading after " + floor(millis()) + "ms");
+  });
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  map = new Map(4, 150);
-  console.log("Done loading!");
+  m = new Map(4, 150);
 }
 
 function draw() {
   background(0);
-  map.show();
+  m.show();
   stroke(255);
   strokeWeight(1);
-  line(width / 2 - 20, height / 2, width / 2 + 20, height / 2);
-  line(width / 2, height / 2 - 20, width / 2, height / 2 + 20)
+  // line(width / 2 - 20, height / 2, width / 2 + 20, height / 2);
+  // line(width / 2, height / 2 - 20, width / 2, height / 2 + 20);
 }
 
 function windowResized() {
@@ -27,12 +28,12 @@ function windowResized() {
 }
 
 function mousePressed() {
-  map.mouse = createVector(mouseX, mouseY);
-  map.pOffset.set(map.offset);
+  m.mouse = createVector(mouseX, mouseY);
+  m.pOffset.set(m.offset);
 }
 
 function mouseDragged() {
-  map.pan();
+  m.pan();
 }
 
 function imageLoaded() {

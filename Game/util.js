@@ -19,3 +19,7 @@ function city(x, y, wh) {
   imageMode(CENTER);
   image(house, x, y, wh, wh);
 }
+
+function randomCol() {
+  return color(random(255), random(255), random(255));
+}
