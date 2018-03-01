@@ -1,6 +1,6 @@
 class Tile {
   constructor(size, map, mapX, mapY) {
-    this.reset(size, map);
+    this.reset(size, map, mapX, mapY);
   }
 
   // displays the Tile in the canvas
@@ -11,16 +11,27 @@ class Tile {
     rectMode(CENTER);
     noStroke();
     fill(this.col);
+    if (this.hasFocus) {
+      fill(175, 0, 0);
+      rect(0, 0, this.SIZE, this.SIZE);
+    }
+    if (this.highlightTile) {
+      fill(0, 255, 0)
+    }
     if (this.hit()) {
       fill(255, 0, 0);
     }
+    if (this.hit() && this.highlightTile) {
+      fill(255,255, 0);
+    }
     rect(0, 0, this.SIZE, this.SIZE);
-    if (this.hit()) {
+    if (this.hit() || this.hasFocus || this.highlightTile) {
       fill(0, 50);
       rect(0, 0, this.SIZE, this.SIZE);
       fill(this.col);
       rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
     }
+    if (this.unit) this.unit.show();
     pop();
   }
 
@@ -35,6 +46,17 @@ class Tile {
     return false;
   }
 
+  highlight() {
+    // push();
+    // translate(this.pos.x, this.pos.y);
+    // fill(0,255,0);
+    // rect(0,0, this.SIZE, this.SIZE);
+    // fill(this.col);
+    // rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
+    // pop();
+    this.highlightTile = true;
+  }
+
   setCol() {
     if (arguments.length <= 4) this.col = color(c);
     else throw new Error("The input for setCol() must be a colour, or an array of length 1-4");
@@ -47,10 +69,8 @@ class Tile {
     this.hasFocus = false;
     this.col = randomCol();
     this.unit = null;
-    this.mapPos = {
-      x: mapX,
-      y: mapY
-    }
+    this.mapX = mapX;
+    this.mapY = mapY;
     // this.col = color(random(0, 255), random(0, 255), random(0, 255));
   }
 
@@ -58,4 +78,11 @@ class Tile {
     this.unit = unit;
   }
 
+  setFocus(bool) {
+    if (this.unit) {
+      this.unit.setFocus(bool);
+    } else {
+      this.hasFocus = bool;
+    }
+  }
 }
