@@ -1,7 +1,7 @@
 // Map variable
 let m;
 let house;
-
+let u;
 // function preload() {
 //   house = loadImage("/Images/house.png", function() {
 //     console.log("Done loading after " + floor(millis()) + "ms");
@@ -11,7 +11,8 @@ let house;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  m = new Map(4, 150);
+  m = new Map(7, 75);
+  u = new Unit(m, m.tiles[3][3], "warrior");
 }
 
 function draw() {
@@ -38,4 +39,12 @@ function mouseDragged() {
 
 function imageLoaded() {
   // No Use currently
+}
+
+function mouseClicked() {
+  for (let arr of m.tiles) {
+    for (let t of arr) {
+      t.setFocus(t.hit());
+    }
+  }
 }
