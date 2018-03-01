@@ -64,9 +64,8 @@ class Map {
 
     for (let i = 0; i < this.tiles.length; i++) {
       for (let j = 0; j < this.tiles.length; j++) {
-        this.tiles[i][j] = new Tile(this.TILE_SIZE, this, i, j);
+        this.tiles[i][j] = new Tile(this.TILE_SIZE, this, j, i);
         // this.tiles[i][j].col = color(126);
-
         this.tiles[i][j].col = color(127 / this.SIZE * j + 128, 127 / this.SIZE * j + 128, 127 / this.SIZE * i+128);
 
         // KINDA TERRAIN
@@ -85,7 +84,7 @@ class Map {
 
       }
     }
-
+    console.log(this.tiles);
     for (let i = 0; i <= this.SIZE; i++) {
       for (let j = 0; j <= this.SIZE; j++) {
         this.points[i][j] = new Point(this.TILE_SIZE / 4, this);
