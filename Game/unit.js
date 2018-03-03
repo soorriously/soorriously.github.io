@@ -33,6 +33,15 @@ class Unit {
 
   }
 
+  move(tile) {
+    this.tile.unit = null
+    this.tile = tile;
+    tile.unit = this;
+    this.mapX = this.tile.mapX;
+    this.mapY = this.tile.mapY;
+    this.hasFcous = false;
+  }
+
   showMovement() {
     if (this.hasFocus) {
       for (let i = -this.info.movement; i <= this.info.movement; i++) {
@@ -41,6 +50,10 @@ class Unit {
             try {
               let tile = this.map.tiles[this.mapY-j][this.mapX-i];
               this.map.tiles[this.mapY-j][this.mapX-i].highlight();
+              if (tile.hit() && mouseIsPressed) {
+                console.log("CLICKED!")
+                this.move(tile);
+              }
             } catch(err) {
               // DO NOTHING
             }
@@ -54,17 +67,31 @@ class Unit {
     this.hasFocus = bool;
   }
 
+  resetPos(map, tile) {
+
+  }
+
 }
 
-const unitTypes = {
+let unitTypes = {
   "warrior": {
     attack: 2,
     defense: 2,
     health: 10,
-    movement: 2,
+    movement: 1,
     abilities: [],
     show(wh) {
       rect(0, 0, wh, wh, 5);
     },
+  },
+  "cavalry": {
+    attack: 2,
+    defense: 1,
+    health: 10,
+    movement: 2,
+    abilities: [],
+    show(wh) {
+      ellipse(0, 0, wh, wh);
+    }
   }
 }

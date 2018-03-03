@@ -1,6 +1,6 @@
 class Tile {
-  constructor(size, map, mapX, mapY) {
-    this.reset(size, map, mapX, mapY);
+  constructor(map, mapX, mapY) {
+    this.reset(map, mapX, mapY);
   }
 
   // displays the Tile in the canvas
@@ -9,7 +9,9 @@ class Tile {
     push();
     translate(this.pos.x, this.pos.y);
     rectMode(CENTER);
-    noStroke();
+    // noStroke();
+    stroke(0);
+    strokeWeight(1);
     fill(this.col);
     if (this.hasFocus) {
       fill(175, 0, 0);
@@ -62,10 +64,10 @@ class Tile {
     else throw new Error("The input for setCol() must be a colour, or an array of length 1-4");
   }
 
-  reset(size, map, mapX, mapY) {
+  reset(map, mapX, mapY) {
     this.pos = createVector(0, 0);
     this.map = map;
-    this.SIZE = size;
+    this.SIZE = this.map.TILE_SIZE;
     this.hasFocus = false;
     this.col = randomCol();
     this.unit = null;
@@ -78,9 +80,17 @@ class Tile {
     this.unit = unit;
   }
 
+  moveUnit(tile) {
+    tile.unit = this.unit;
+    this.unit = null;
+  }
+
   setFocus(bool) {
     if (this.unit) {
+      print("1");
       this.unit.setFocus(bool);
+      this.unit.showMovement();
+      this.hasFocus = bool;
     } else {
       this.hasFocus = bool;
     }

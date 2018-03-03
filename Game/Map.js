@@ -62,9 +62,10 @@ class Map {
     this.showTiles = true;
     this.showPoints = true;
 
+    this.selectedUnit = null;
     for (let i = 0; i < this.tiles.length; i++) {
       for (let j = 0; j < this.tiles.length; j++) {
-        this.tiles[i][j] = new Tile(this.TILE_SIZE, this, j, i);
+        this.tiles[i][j] = new Tile(this, j, i);
         // this.tiles[i][j].col = color(126);
         this.tiles[i][j].col = color(127 / this.SIZE * j + 128, 127 / this.SIZE * j + 128, 127 / this.SIZE * i+128);
 
@@ -84,7 +85,6 @@ class Map {
 
       }
     }
-    console.log(this.tiles);
     for (let i = 0; i <= this.SIZE; i++) {
       for (let j = 0; j <= this.SIZE; j++) {
         this.points[i][j] = new Point(this.TILE_SIZE / 4, this);
@@ -108,7 +108,7 @@ class Map {
   }
 
 
-  setFocus(x, y) {
+  centre(x, y) {
     //this.initOffset.set(this.tiles[y][x].pos);
     console.log(this.offset + 10)
     this.offset.set(this.tiles[y][x].pos);
@@ -119,6 +119,21 @@ class Map {
   showOffsets() {
     print("offset: " + this.offset);
   }
+
+  checkFocus() {
+    for (let arr of this.tiles) {
+      for (let t of arr) {
+        t.highlightTile = false;
+        t.setFocus(t.hit());
+        if (t.hit() && t.highlightTile) {
+          print("WORKING");
+          this.selectedUnit.move(t);
+        }
+      }
+    }
+  }
+
+
 }
 
 /* To cycle through each tile
@@ -127,4 +142,13 @@ for (let i = 0; i < this.rows; i++) {
 
   }
 }
+
+Using Enhance For loop
+for (let arr of this.tiles) {
+  for (let t of arr) {
+
+  }
+}
+
+
 */
