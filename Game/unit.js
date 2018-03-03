@@ -73,7 +73,7 @@ class Unit {
 
 }
 
-let unitTypes = {
+const unitTypes = {
   "warrior": {
     attack: 2,
     defense: 2,
