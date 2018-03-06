@@ -15,3 +15,23 @@ function city(x, y, wh) {
 function randomCol() {
   return color(random(255), random(255), random(255));
 }
+
+function objToInfo(obj, _title) {
+  let keys = Object.keys(obj);
+  let info = {
+    title: _title.toUpperCase(),
+    content: {
+      labels: keys.map(e => {
+        if ((typeof obj[e] !== 'undefined') || (typeof obj[e] !== 'function')) {
+          return e;
+        }
+      }).slice(0, keys.length - 1),
+      data: keys.map(e => {
+        if ((typeof obj[e] !== 'undefined') || (typeof obj[e] !== 'function')) {
+          return obj[e];
+        }
+      }).slice(0, keys.length - 1)
+    }
+  }
+  return info;
+}
