@@ -57,5 +57,4 @@ function imageLoaded() {
 
 function mouseClicked() {
   m.checkFocus();
-  i.checkButtonHit();
 }
