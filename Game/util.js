@@ -1,15 +1,5 @@
-function make2DArray(rows, cols) {
-  if (cols) {
-    let arr = new Array(rows);
-    for (let i = 0; i < arr.length; i++) {
-      arr[i] = new Array(cols);
-    }
-    return arr;
-  }
-  let arr = new Array(rows);
-  for (let i = 0; i < arr.length; i++) {
-    arr[i] = new Array(rows);
-  }
+let make2DArray = (a,b = a) => {
+  let arr = new Array(a).fill().map(e => new Array(b));
   return arr;
 }
 

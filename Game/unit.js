@@ -72,26 +72,3 @@ class Unit {
   }
 
 }
-
-const unitTypes = {
-  "warrior": {
-    attack: 2,
-    defense: 2,
-    health: 10,
-    movement: 1,
-    abilities: [],
-    show(wh) {
-      rect(0, 0, wh, wh, 5);
-    },
-  },
-  "cavalry": {
-    attack: 2,
-    defense: 1,
-    health: 10,
-    movement: 2,
-    abilities: [],
-    show(wh) {
-      ellipse(0, 0, wh, wh);
-    }
-  }
-}
