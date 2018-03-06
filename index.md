@@ -15,10 +15,10 @@
 6. S
 7. T
 
-``` javascript
+```javascript
   let doStuff = (a, b) => {
     return (a === b) ? a\**b:\**a;
   }
-
+```
 # SOMETHING UNIMPORTANT
 The quick brown [jump](/Game) foxes over the [doggy](/Testing) laze.
