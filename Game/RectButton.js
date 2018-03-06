@@ -1,7 +1,7 @@
 class RectButton {
   constructor() {
     this.textSize = 24;
-    this.activate = true;
+    this.activated = true;
   }
 
   setPosition(x, y) {
@@ -103,13 +103,15 @@ class RectButton {
   }
 
   hit() {
-    if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2) {
-      if (mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
-        return true;
+    if (this.activated) {
+      if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2) {
+        if (mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
+          return true;
+        }
+        return false;
       }
       return false;
     }
-    return false;
   }
 
   onclick(func) {
