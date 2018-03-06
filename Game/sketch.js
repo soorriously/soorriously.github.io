@@ -2,6 +2,17 @@
 let m;
 let house;
 let u;
+let unitInfo = {};
+let objective = {
+  regular: null,
+  light: null
+}
+
+function preload() {
+  objective.light = loadFont("/Fonts/Objective-Light.otf");
+  objective.regular = loadFont("/Fonts/Objective-Regular.otf");
+}
+
 // function preload() {
 //   house = loadImage("/Images/house.png", function() {
 //     console.log("Done loading after " + floor(millis()) + "ms");
@@ -13,6 +24,9 @@ function setup() {
   frameRate(60);
   m = new Map(9, 75);
   u = new Unit(m, m.tiles[3][3], "warrior");
+  for (let type in unitTypes) {
+    unitInfo[type] = objToInfo(unitTypes[type], type);
+  }
 }
 
 function draw() {
@@ -43,4 +57,5 @@ function imageLoaded() {
 
 function mouseClicked() {
   m.checkFocus();
+  i.checkButtonHit();
 }
