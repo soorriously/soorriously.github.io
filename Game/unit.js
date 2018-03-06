@@ -72,3 +72,26 @@ class Unit {
   }
 
 }
+
+let unitTypes = {
+  "warrior": {
+    attack: 2,
+    defense: 2,
+    health: 10,
+    movement: 1,
+    abilities: ['none'],
+    show(wh) {
+      rect(0, 0, wh, wh, 5);
+    },
+  },
+  "horseman": {
+    attack: 2,
+    defense: 1,
+    health: 10,
+    movement: 2,
+    abilities: ['none', 'none2', '\nnone'],
+    show(wh) {
+      ellipse(0, 0, wh, wh);
+    }
+  }
+}
