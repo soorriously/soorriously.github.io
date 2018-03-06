@@ -17,8 +17,8 @@
 7. T
 
 ```javascript
-let doStuff = (a, b) => {
-  return (a === b) ? a\**b:\**a;
+let doStuff = (a, b) => {  
+  return (a === b) ? a\**b:\**a;  
 }
 ```
 # SOMETHING UNIMPORTANT
