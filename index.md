@@ -6,7 +6,8 @@
 ###### EVEN LESS THAT EVEN LESSER IMPORTANT INFORMATION
 - YAY
 - DOC
-- POINTS
+- POINTS  
+
 1. NUM-
 2. BER-
 3. ED
@@ -16,9 +17,9 @@
 7. T
 
 ```javascript
-  let doStuff = (a, b) => {
-    return (a === b) ? a\**b:\**a;
-  }
+let doStuff = (a, b) => {
+  return (a === b) ? a\**b:\**a;
+}
 ```
 # SOMETHING UNIMPORTANT
 The quick brown [jump](/Game) foxes over the [doggy](/Testing) laze.
