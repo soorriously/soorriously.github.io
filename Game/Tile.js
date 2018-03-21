@@ -87,12 +87,9 @@ class Tile {
 
   setFocus(bool) {
     if (this.unit) {
-      print("1");
       this.unit.setFocus(bool);
       this.unit.showMovement();
-      this.hasFocus = bool;
-    } else {
-      this.hasFocus = bool;
     }
+    this.hasFocus = bool;
   }
 }

@@ -39,7 +39,7 @@ class Unit {
     tile.unit = this;
     this.mapX = this.tile.mapX;
     this.mapY = this.tile.mapY;
-    this.hasFcous = false;
+    this.hasFocus = false;
   }
 
   showMovement() {
@@ -50,7 +50,7 @@ class Unit {
             try {
               let tile = this.map.tiles[this.mapY-j][this.mapX-i];
               this.map.tiles[this.mapY-j][this.mapX-i].highlight();
-              if (tile.hit() && mouseIsPressed) {
+              if (tile.hit() && (MousePressed && !pMousePressed)) {
                 console.log("CLICKED!")
                 this.move(tile);
               }
@@ -92,6 +92,18 @@ let unitTypes = {
     abilities: ['none', 'none2', '\nnone'],
     show(wh) {
       ellipse(0, 0, wh, wh);
+    }
+  },
+  "potato": {
+    attack:999,
+    defense:999,
+    health:999,
+    movement:10,
+    abilities: ['potato'],
+    show(wh) {
+      polygon(0,0,wh/2,3);
+      fill(255,0,0);
+      ellipse(0,0, wh - 10, wh - 10);
     }
   }
 }

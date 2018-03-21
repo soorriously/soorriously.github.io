@@ -2,6 +2,8 @@
 let m;
 let house;
 let u;
+let pMousePressed;
+let MousePressed = false;
 let unitInfo = {};
 let objective = {
   regular: null,
@@ -22,14 +24,17 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  m = new Map(9, 75);
+  m = new Map(9, 50);
   u = new Unit(m, m.tiles[3][3], "warrior");
+  // mouseClicked(m.checkFocus());
   for (let type in unitTypes) {
     unitInfo[type] = objToInfo(unitTypes[type], type);
   }
 }
 
 function draw() {
+  pMousePressed = MousePressed;
+  MousePressed = mouseIsPressed;
   background(0);
   m.show();
   // stroke(255);
@@ -48,7 +53,15 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-  m.pan();
+  // m.pan();
+}
+
+function mouseReleased() {
+  for (let arr of m.tiles) {
+    for (t of arr) {
+      t.setFocus(false);
+    }
+  }
 }
 
 function imageLoaded() {
