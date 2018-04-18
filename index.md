@@ -44,6 +44,11 @@ void doStuff(float a, float b) {
 |:---:|:---:|:---:|
 | 1 | 2 | 3 |
 
+| Tables        | Are           | Cool  | 
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 
 # SOMETHING UNIMPORTANT
 The quick brown [jump](/Game) foxes over the [doggy](/Testing) laze.

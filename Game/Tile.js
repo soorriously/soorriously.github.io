@@ -4,14 +4,14 @@ class Tile {
   }
 
   // displays the Tile in the canvas
-  show(x, y) {
-    this.pos.set(x, y);
+  show() {
+    // this.pos.set(x, y);
     push();
     translate(this.pos.x, this.pos.y);
     rectMode(CENTER);
     // noStroke();
     stroke(0);
-    strokeWeight(1);
+    strokeWeight(0.5);
     fill(this.col);
     if (this.hasFocus) {
       fill(175, 0, 0);
@@ -24,17 +24,21 @@ class Tile {
       fill(255, 0, 0);
     }
     if (this.hit() && this.highlightTile) {
-      fill(255,255, 0);
+      fill(255, 0, 0);
     }
     rect(0, 0, this.SIZE, this.SIZE);
     if (this.hit() || this.hasFocus || this.highlightTile) {
-      fill(0, 50);
+      // fill(0, 50);
       rect(0, 0, this.SIZE, this.SIZE);
       fill(this.col);
       rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
     }
     if (this.unit) this.unit.show();
     pop();
+  }
+
+  update(x, y) {
+    this.pos.set(x, y);
   }
 
   // Checks whether the mouse is within the Tile
@@ -56,11 +60,14 @@ class Tile {
     // fill(this.col);
     // rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
     // pop();
-    this.highlightTile = true;
+
+    // this.highlightTile = true;
+
+
   }
 
   setCol() {
-    if (arguments.length <= 4) this.col = color(c);
+    if (arguments.length <= 4) this.col = color(arguments);
     else throw new Error("The input for setCol() must be a colour, or an array of length 1-4");
   }
 
@@ -83,13 +90,5 @@ class Tile {
   moveUnit(tile) {
     tile.unit = this.unit;
     this.unit = null;
-  }
-
-  setFocus(bool) {
-    if (this.unit) {
-      this.unit.setFocus(bool);
-      this.unit.showMovement();
-    }
-    this.hasFocus = bool;
   }
 }

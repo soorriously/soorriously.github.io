@@ -5,29 +5,44 @@ class Map {
 
   show() {
     if (this.showTiles) {
-      for (let i = 0; i < this.SIZE; i++) {
-        for (let j = 0; j < this.SIZE; j++) {
-          this.tiles[i][j].show(j * this.TILE_SIZE + this.offset.x, i * this.TILE_SIZE + this.offset.y);
-          // this.tiles[i][j].show(this.offset.x, this.offset.y);
-
-          // let f = max(0, noise(0.1 * i, 0.1 * j) - 0.5);
-          // let c = this.tiles[i][j].col;
-          // fill(c);
-          // noStroke();
-          // this.tiles[i][j].show(i * this.TILE_SIZE + this.offset.x + this.initOffset.x, j * this.TILE_SIZE - 200 * f + this.offset.y + this.initOffset.y, this.TILE_SIZE);
-          // fill(red(c) / 2, green(c) / 2, blue(c) / 2);
-          // rect(i * this.TILE_SIZE, (j + 1) * this.TILE_SIZE - 200 * f, this.TILE_SIZE, this.TILE_SIZE + 200 * f);
+      // for (let i = 0; i < this.SIZE; i++) {
+      //   for (let j = 0; j < this.SIZE; j++) {
+      //     this.tiles[i][j].show(j * this.TILE_SIZE + this.offset.x, i * this.TILE_SIZE + this.offset.y);
+      //     // this.tiles[i][j].show(this.offset.x, this.offset.y);
+      //
+      //     // let f = max(0, noise(0.1 * i, 0.1 * j) - 0.5);
+      //     // let c = this.tiles[i][j].col;
+      //     // fill(c);
+      //     // noStroke();
+      //     // this.tiles[i][j].show(i * this.TILE_SIZE + this.offset.x + this.initOffset.x, j * this.TILE_SIZE - 200 * f + this.offset.y + this.initOffset.y, this.TILE_SIZE);
+      //     // fill(red(c) / 2, green(c) / 2, blue(c) / 2);
+      //     // rect(i * this.TILE_SIZE, (j + 1) * this.TILE_SIZE - 200 * f, this.TILE_SIZE, this.TILE_SIZE + 200 * f);
+      //   }
+      // }
+      for (let arr of this.tiles) {
+        for (let tile of arr) {
+          tile.update(tile.mapX * tile.SIZE + this.offset.x, tile.mapY * tile.SIZE + this.offset.y)
+          tile.show();
         }
       }
     }
     // Show all Points in the canvas
     if (this.showPoints) {
-      for (let i = 0; i <= this.SIZE; i++) {
-        for (let j = 0; j <= this.SIZE; j++) {
-          this.points[i][j].show((j - 0.5) * this.TILE_SIZE + this.offset.x, (i - 0.5) * this.TILE_SIZE + this.offset.y);
+      // for (let i = 0; i <= this.SIZE; i++) {
+      //   for (let j = 0; j <= this.SIZE; j++) {
+      //     this.points[i][j].show((j - 0.5) * this.TILE_SIZE + this.offset.x, (i - 0.5) * this.TILE_SIZE + this.offset.y);
+      //   }
+      // }
+      for (let arr of this.points) {
+        for (let point of arr) {
+          point.show((point.mapX - 0.5) * this.TILE_SIZE + this.offset.x, (point.mapY - 0.5) * this.TILE_SIZE + this.offset.y)
         }
       }
     }
+  }
+
+  update() {
+    if (this.selectedTile) this.selectedTIle.highlight("focus");
   }
 
   generate() {
@@ -50,24 +65,30 @@ class Map {
     this.points = make2DArray(this.SIZE + 1);
     // FOR PANNING THROUGH THE MAP:
     // Current offset
-    this.offset = createVector((width - this.SIZE * this.TILE_SIZE) / 2, (height - this.SIZE * this.TILE_SIZE) / 2);
+    // this.offset = createVector((width - this.SIZE * this.TILE_SIZE) / 2, (height - this.SIZE * this.TILE_SIZE) / 2);
+    this.offset = createVector(0 + TILE_SIZE / 2, 0 + TILE_SIZE / 2);
+
     // Previous offset
     this.pOffset = createVector(0, 0);
 
-    this.initOffset = createVector(0,0);
+    this.initOffset = createVector(0, 0);
     this.initOffset.set(this.offset);
+
     // vector to store mouse position for panning
     this.mouse = createVector(mouseX, mouseY);
+
     // Whether or not to show the Tiles/Point
     this.showTiles = true;
     this.showPoints = true;
 
+    this.selectedTile = null;
     this.selectedUnit = null;
-    for (let i = 0; i < this.tiles.length; i++) {
-      for (let j = 0; j < this.tiles.length; j++) {
+
+    for (let i = 0; i < this.SIZE; i++) {
+      for (let j = 0; j < this.SIZE; j++) {
         this.tiles[i][j] = new Tile(this, j, i);
         // this.tiles[i][j].col = color(126);
-        this.tiles[i][j].col = color(127 / this.SIZE * j + 128, 127 / this.SIZE * j + 128, 127 / this.SIZE * i+128);
+        this.tiles[i][j].col = color(127 / this.SIZE * j + 128, 127 / this.SIZE * j + 128, 127 / this.SIZE * i + 128);
 
         // KINDA TERRAIN
         // let temp = 255*noise(0.1*i, 0.1*j);
@@ -87,7 +108,7 @@ class Map {
     }
     for (let i = 0; i <= this.SIZE; i++) {
       for (let j = 0; j <= this.SIZE; j++) {
-        this.points[i][j] = new Point(this.TILE_SIZE / 4, this);
+        this.points[i][j] = new Point(this.TILE_SIZE / 4, this, j, i);
       }
     }
 
@@ -107,36 +128,33 @@ class Map {
     this.showTiles = (typeof bool === "boolean") ? bool : !this.showTiles;
   }
 
+  centre(mx, my) {
+    let x, y;
+    x = width / 2 - this.TILE_SIZE * constrain(mx, 0, this.SIZE - 1);
+    y = height / 2 - this.TILE_SIZE * constrain(my, 0, this.SIZE - 1);
+    let tempPos = createVector(x, y);
 
-  centre(x, y) {
-    //this.initOffset.set(this.tiles[y][x].pos);
-    console.log(this.offset + 10)
-    this.offset.set(this.tiles[y][x].pos);
-    this.pOffset.set(this.tiles[y][x].pos);
-    console.log(this.offset);
+    this.offset.set(tempPos);
   }
 
   showOffsets() {
-    print("offset: " + this.offset);
+    console.log("offset: " + this.offset);
   }
 
   checkFocus() {
     for (let arr of this.tiles) {
       for (let t of arr) {
-        t.highlightTile = false;
-        t.setFocus(t.hit());
-        if (t.hit() && t.highlightTile) {
-          print("WORKING");
-          this.selectedUnit.move(t);
+        if (t.hit()) {
+          this.selectedTile = t;
+          if (t.unit) this.selectedUnit = t.unit;
         }
       }
     }
   }
-
-
 }
 
-/* To cycle through each tile
+/*
+To cycle through each tile
 for (let i = 0; i < this.rows; i++) {
   for (let j = 0; j < this.cols; j++) {
 
@@ -149,6 +167,4 @@ for (let arr of this.tiles) {
 
   }
 }
-
-
 */

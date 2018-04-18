@@ -53,7 +53,7 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-  // m.pan();
+  m.pan();
 }
 
 function mouseReleased() {
@@ -65,7 +65,7 @@ function mouseReleased() {
 }
 
 function imageLoaded() {
-  // No Use currently
+  // Does nothing
 }
 
 function mouseClicked() {

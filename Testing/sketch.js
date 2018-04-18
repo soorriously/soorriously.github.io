@@ -1,24 +1,3 @@
-// let b;
-// let i;
-//
-//
-//
-//
-// function setup() {
-//   createCanvas(windowWidth, windowHeight, P2D);
-// }
-//
-// function draw() {
-//   background(0);
-// }
-//
-// function mouseClicked() {
-//
-// }
-//
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
 var cwidth = 800; //canvas width
 var cheight = 800; //canvas width
 var ycount = 0; //y position used to determine placements

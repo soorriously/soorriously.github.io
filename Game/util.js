@@ -1,6 +1,5 @@
-let make2DArray = (a,b = a) => {
-  let arr = new Array(a).fill().map(e => new Array(b));
-  return arr;
+function make2DArray(rows, cols = rows) {
+  return new Array(rows).fill().map(e => new Array(cols));
 }
 
 function city(x, y, wh) {
@@ -45,4 +44,24 @@ function polygon(x, y, radius, npoints) {
     vertex(sx, sy);
   }
   endShape(CLOSE);
+}
+
+function averageColour() {
+  try {
+    let r, g, b, a;
+    for (let col of arguments) {
+      r += red(col);
+      g += green(col);
+      b += blue(col);
+      a = alpha(col);
+    }
+    p5
+    r /= arguments.length;
+    g /= arguments.length;
+    b /= arguments.length;
+    a /= arguments.length;
+    return color(r,g,b,a);
+  } catch (err) {
+    throw new Error("This function should be passed p5.js color objects only.")
+  }
 }
