@@ -1,39 +1,21 @@
-// Map variable
-let m;
-let mouseStates = [false,true];
+const startString = "https://drive.google.com/viewerng/img?id=ACFrOgBlzIaR8OANEUMGAsCBO9RFhCD--aWerq8GcMfuFlUU9gytYmH14dNa-VpsQdzMtURvOCQYzP6o5m2UBjXnxobrxTjUIbKr8ky2GrkG566bA_TsgjXp2bbwg7E%3D&authuser=0&page=";
+const endString = "&skiphighlight=true&w=1600&webp=false";
+const numPages = 54;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  frameRate(120);
-  m = new Map(5, 125);
+  noCanvas();
+  for (let i = 0; i < numPages; i++) {
+    let str = startString + i.toString() + endString;
+    // createP(str);
+    createA(str, "PAGE: " + (i+1).toString());
+    // createP("PAGE: " + (i+1).toString());
+    // createImg(str);
+  }
 }
-
-function draw() {
-  background(0);
-  m.show();
-  m.update();
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
-
-function mousePressed() {
-  m.mouse = createVector(mouseX, mouseY);
-  m.pOffset.set(m.offset);
-  
-}
-
-function mouseDragged() {
-  m.pan();
-  m.selectedTile = null;
-  m.selectedUnit = null;
-}
-
-function mouseReleased() {
-
-}
-
-function mouseClicked() {
-  m.checkFocus();
-}
+// function draw() {
+//   DDOS("Wilson Li")
+// }
+//
+// function DDOS(name) {
+//   console.log("DDOSing", name, "was successful!");
+// }

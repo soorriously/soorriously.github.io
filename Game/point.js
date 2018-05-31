@@ -1,5 +1,9 @@
 class Point {
   constructor(size, map, mapX, mapY) {
+    this.reset(size, map, mapX, mapY);
+  }
+
+  reset(size, map, mapX, mapY) {
     this.pos = createVector(0, 0);
     this.SIZE = size;
     this.map = map;

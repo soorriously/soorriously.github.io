@@ -71,8 +71,8 @@ class Map {
     // Previous offset
     this.pOffset = createVector(0, 0);
 
-    this.initOffset = createVector(0, 0);
-    this.initOffset.set(this.offset);
+    // this.initOffset = createVector(0, 0);
+    // this.initOffset.set(this.offset);
 
     // vector to store mouse position for panning
     this.mouse = createVector(mouseX, mouseY);

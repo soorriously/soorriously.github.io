@@ -38,13 +38,19 @@ void doStuff(float a, float b) {
   }
 }
 ```
+```markdown
+# Heading
+*Italics* **bold** ***bold italics***
+_Italics_ __bold__ ___bold italics___
+`code`
+```
 
 # WOW! A TABLE!
 | JavaScript | Python | Java |
 |:---:|:---:|:---:|
 | 1 | 2 | 3 |
 
-| Tables        | Are           | Cool  | 
+| Tables        | Are           | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
 | col 2 is      | centered      |   $12 |

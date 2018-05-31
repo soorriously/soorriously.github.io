@@ -65,3 +65,14 @@ function averageColour() {
     throw new Error("This function should be passed p5.js color objects only.")
   }
 }
+
+function emptySquare(x, y, outsideWidth, insideWidth, color) {
+  w = (outsideWidth + insideWidth) / 2;
+  // translate(x, y);
+  // strokeCap(PROJECT);
+  noFill();
+  stroke(color);
+  rectMode(CENTER);
+  strokeWeight((outsideWidth - insideWidth) / 2);
+  rect(0, 0, w, w);
+}

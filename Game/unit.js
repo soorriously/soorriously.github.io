@@ -1,5 +1,9 @@
 class Unit {
   constructor(map, tile, type) {
+    this.reset(map, tile, type);
+  }
+
+  reset(map, tile, type) {
     // this.player = player;
     this.map = map;
     this.hasFocus = false;
@@ -10,7 +14,6 @@ class Unit {
     this.mapY = this.tile.mapY;
     print(this.mapX);
     print(this.mapY);
-
     this.tile.setUnit(this);
     // player.units.push(this);
   }

@@ -56,3 +56,7 @@ class infoCard {
     this.button.toggle(bool);
   }
 }
+
+p5 = {
+  
+}

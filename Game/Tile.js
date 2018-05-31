@@ -7,31 +7,46 @@ class Tile {
   show() {
     // this.pos.set(x, y);
     push();
+    // OLD CRAPPY CODE
+    // translate(this.pos.x, this.pos.y);
+    // rectMode(CENTER);
+    // // noStroke();
+    // stroke(0);
+    // strokeWeight(1);
+    // fill(this.col);
+    // if (this.hasFocus) {
+    //   fill(175, 0, 0);
+    //   rect(0, 0, this.SIZE, this.SIZE);
+    // }
+    // if (this.highlightTile) {
+    //   fill(0, 255, 0)
+    // }
+    // if (this.hit()) {
+    //   fill(255, 0, 0);
+    // }
+    // if (this.hit() && this.highlightTile) {
+    //   fill(255, 0, 0);
+    // }
+    // rect(0, 0, this.SIZE, this.SIZE);
+    // if (this.hit() || this.hasFocus || this.highlightTile) {
+    //   // fill(0, 50);
+    //   rect(0, 0, this.SIZE, this.SIZE);
+    //   fill(this.col);
+    //   rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
+    // }
     translate(this.pos.x, this.pos.y);
     rectMode(CENTER);
-    // noStroke();
     stroke(0);
-    strokeWeight(0.5);
+    strokeWeight(1);
     fill(this.col);
-    if (this.hasFocus) {
-      fill(175, 0, 0);
-      rect(0, 0, this.SIZE, this.SIZE);
-    }
-    if (this.highlightTile) {
-      fill(0, 255, 0)
-    }
-    if (this.hit()) {
-      fill(255, 0, 0);
-    }
-    if (this.hit() && this.highlightTile) {
-      fill(255, 0, 0);
-    }
     rect(0, 0, this.SIZE, this.SIZE);
-    if (this.hit() || this.hasFocus || this.highlightTile) {
-      // fill(0, 50);
-      rect(0, 0, this.SIZE, this.SIZE);
-      fill(this.col);
-      rect(0, 0, this.SIZE * 0.75, this.SIZE * 0.75);
+    if (this.hit()) {
+      push();
+      emptySquare(this.pos.x, this.pos.y,
+        this.SIZE, this.SIZE * 0.75,
+        color(255, 0, 0));
+      pop();
+      // noLoop();
     }
     if (this.unit) this.unit.show();
     pop();
@@ -66,11 +81,6 @@ class Tile {
 
   }
 
-  setCol() {
-    if (arguments.length <= 4) this.col = color(arguments);
-    else throw new Error("The input for setCol() must be a colour, or an array of length 1-4");
-  }
-
   reset(map, mapX, mapY) {
     this.pos = createVector(0, 0);
     this.map = map;
@@ -80,7 +90,6 @@ class Tile {
     this.unit = null;
     this.mapX = mapX;
     this.mapY = mapY;
-    // this.col = color(random(0, 255), random(0, 255), random(0, 255));
   }
 
   setUnit(unit) {
@@ -91,4 +100,11 @@ class Tile {
     tile.unit = this.unit;
     this.unit = null;
   }
+
+  set hasFocus(bool) {
+    if (this.unit) {
+      this.unit.hasFocus = bool;
+    }
+  }
+
 }

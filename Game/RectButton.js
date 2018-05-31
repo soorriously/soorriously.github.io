@@ -9,8 +9,8 @@ class RectButton {
     this.y = y;
   }
 
-  setFill(c) {
-    this.fillCol = color(c);
+  setFill() {
+    this.fillCol = color(arguments);
   }
 
   setFont(font) {
@@ -114,8 +114,10 @@ class RectButton {
     }
   }
 
-  onclick(func) {
-    func();
+  onclick() {
+    for (func of arguments) {
+      if (typeof func === "function") func();
+    }
   }
 
 }
