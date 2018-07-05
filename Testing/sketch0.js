@@ -4,18 +4,11 @@ const numPages = 54;
 
 function setup() {
   noCanvas();
-  for (let i = 0; i < numPages; i++) {
-    let str = startString + i.toString() + endString;
-    // createP(str);
-    createA(str, "PAGE: " + (i+1).toString());
-    // createP("PAGE: " + (i+1).toString());
-    // createImg(str);
-  }
+  // for (let i = 0; i < numPages; i++) {
+  //   let str = startString + i.toString() + endString;
+  //   // createP(str);
+  //   createA(str, "PAGE: " + (i+1).toString());
+  //   // createP("PAGE: " + (i+1).toString());
+  //   // createImg(str);
+  // }
 }
-// function draw() {
-//   DDOS("Wilson Li")
-// }
-//
-// function DDOS(name) {
-//   console.log("DDOSing", name, "was successful!");
-// }

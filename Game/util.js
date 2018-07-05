@@ -1,4 +1,6 @@
 function make2DArray(rows, cols = rows) {
+  // Creates a new array of length 'rows' then returns a new array
+  // where each item is an array of length 'cols'
   return new Array(rows).fill().map(e => new Array(cols));
 }
 
@@ -46,7 +48,7 @@ function polygon(x, y, radius, npoints) {
   endShape(CLOSE);
 }
 
-function averageColour() {
+function avgColour() {
   try {
     let r, g, b, a;
     for (let col of arguments) {
@@ -55,7 +57,6 @@ function averageColour() {
       b += blue(col);
       a = alpha(col);
     }
-    p5
     r /= arguments.length;
     g /= arguments.length;
     b /= arguments.length;
@@ -75,4 +76,19 @@ function emptySquare(x, y, outsideWidth, insideWidth, color) {
   rectMode(CENTER);
   strokeWeight((outsideWidth - insideWidth) / 2);
   rect(0, 0, w, w);
+}
+
+function crosshair() {
+  stroke(255);
+  strokeWeight(1);
+  line(width / 2 - 20, height / 2, width / 2 + 20, height / 2);
+  line(width / 2, height / 2 - 20, width / 2, height / 2 + 20);
+}
+
+function avg() {
+  let sum = 0;
+  for (let num of arguments) {
+    sum += num;
+  }
+  return (sum / arguments.length);
 }
