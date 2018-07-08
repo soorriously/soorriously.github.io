@@ -43,13 +43,12 @@ class Tile {
     if (this.hit()) {
       push();
       emptySquare(this.pos.x, this.pos.y,
-        this.SIZE, this.SIZE * 0.75,
-        this.hitCol);
+                  this.SIZE, this.SIZE * 0.75,
+                  this.hitCol);
       pop();
     }
     if (this.unit) this.unit.show();
     if (this.hasFocus) {
-      print(3);
       fill(0);
       ellipse(0,0,50,50);
     }
@@ -62,13 +61,14 @@ class Tile {
 
   // Checks whether the mouse is within the Tile
   hit() {
-    if (mouseX > this.pos.x - this.SIZE / 2 &&
-        mouseX < this.pos.x + this.SIZE / 2 &&
-        mouseY > this.pos.y - this.SIZE / 2 &&
-        mouseY < this.pos.y + this.SIZE / 2) {
-      return true;
-    }
-    return false;
+    // OLD CODE
+    // if (mouseX > this.pos.x - this.SIZE / 2 &&
+    //     mouseX < this.pos.x + this.SIZE / 2 &&
+    //     mouseY > this.pos.y - this.SIZE / 2 &&
+    //     mouseY < this.pos.y + this.SIZE / 2) {
+    //   return true;
+    // }
+    // return false;
     return (mouseX > this.pos.x - this.SIZE / 2 &&
             mouseX < this.pos.x + this.SIZE / 2 &&
             mouseY > this.pos.y - this.SIZE / 2 &&
@@ -100,10 +100,8 @@ class Tile {
     this.unit = null;
   }
 
-  set hasFocus(bool) {
-    if (this.unit) {
-      this.unit.hasFocus = bool;
-    }
+  setFocussed(bool) {
+    this.hasFocus = bool;
   }
 
 }

@@ -1,7 +1,44 @@
+// Creates a new array of length rows then returns a new array
+// where each item is an array of length cols
 function make2DArray(rows, cols = rows) {
-  // Creates a new array of length 'rows' then returns a new array
-  // where each item is an array of length 'cols'
   return new Array(rows).fill().map(e => new Array(cols));
+}
+
+// Draws a regular polygon to the canvas
+function polygon(x, y, radius, npoints) {
+  let angle = TWO_PI / npoints;
+  beginShape();
+  for (let a = 0; a < TWO_PI; a += angle) {
+    let newx = x + cos(a) * radius;
+    let newy = y + sin(a) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
+
+// Returns the colour produced by averaging the red, green and blue values
+function avgColour() {
+  try {
+    let r, g, b, a;
+    for (let col of arguments) {
+      r += red(col);
+      g += green(col);
+      b += blue(col);
+      a = alpha(col);
+    }
+    r /= arguments.length;
+    g /= arguments.length;
+    b /= arguments.length;
+    a /= arguments.length;
+    return color(r,g,b,a);
+  } catch (err) {
+    throw new Error("This function should be passed p5.js color objects only.")
+  }
+}
+
+// Returns a new p5.Color object with random red, green and blue values
+function randomCol() {
+  return color(random(255), random(255), random(255));
 }
 
 function city(x, y, wh) {
@@ -11,10 +48,6 @@ function city(x, y, wh) {
   ellipse(x, y, wh, wh);
   // imageMode(CENTER);
   // image(house, x, y, wh, wh);
-}
-
-function randomCol() {
-  return color(random(255), random(255), random(255));
 }
 
 function objToInfo(obj, _title) {
@@ -37,40 +70,11 @@ function objToInfo(obj, _title) {
   return info;
 }
 
-function polygon(x, y, radius, npoints) {
-  let angle = TWO_PI / npoints;
-  beginShape();
-  for (let a = 0; a < TWO_PI; a += angle) {
-    let sx = x + cos(a) * radius;
-    let sy = y + sin(a) * radius;
-    vertex(sx, sy);
-  }
-  endShape(CLOSE);
-}
 
-function avgColour() {
-  try {
-    let r, g, b, a;
-    for (let col of arguments) {
-      r += red(col);
-      g += green(col);
-      b += blue(col);
-      a = alpha(col);
-    }
-    r /= arguments.length;
-    g /= arguments.length;
-    b /= arguments.length;
-    a /= arguments.length;
-    return color(r,g,b,a);
-  } catch (err) {
-    throw new Error("This function should be passed p5.js color objects only.")
-  }
-}
+
 
 function emptySquare(x, y, outsideWidth, insideWidth, color) {
   w = (outsideWidth + insideWidth) / 2;
-  // translate(x, y);
-  // strokeCap(PROJECT);
   noFill();
   stroke(color);
   rectMode(CENTER);
@@ -90,5 +94,5 @@ function avg() {
   for (let num of arguments) {
     sum += num;
   }
-  return (sum / arguments.length);
+  return sum / arguments.length;
 }

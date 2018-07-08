@@ -28,21 +28,6 @@ class Map {
         }
       }
     }
-    // // Show all Points in the canvas
-    // if (this.showPoints) {
-    //   // OLD CODE
-    //   // for (let i = 0; i <= this.SIZE; i++) {
-    //   //   for (let j = 0; j <= this.SIZE; j++) {
-    //   //     this.points[i][j].show((j - 0.5) * this.TILE_SIZE + this.offset.x, (i - 0.5) * this.TILE_SIZE + this.offset.y);
-    //   //   }
-    //   // }
-    //   for (let arr of this.points) {
-    //     for (let point of arr) {
-    //       point.show((point.mapX - 0.5) * this.TILE_SIZE + this.offset.x,
-    //                  (point.mapY - 0.5) * this.TILE_SIZE + this.offset.y)
-    //     }
-    //   }
-    // }
   }
 
   update() {
@@ -92,20 +77,8 @@ class Map {
                                      127 / this.SIZE * (i + j) / 2 + 128);
       }
     }
-    // for (let i = 0; i <= this.SIZE; i++) {
-    //   for (let j = 0; j <= this.SIZE; j++) {
-    //     this.points[i][j] = new Point(this.TILE_SIZE / 4, this, j, i);
-    //   }
-    // }
     this.centreOn(CENTER);
   }
-
-  // togglePoints(bool) {
-  //   // Legacy Code
-  //   // if (typeof bool === "boolean") return this.showPoints = bool;
-  //   // return this.showPoints = !this.showPoints;
-  //   this.showPoints = (typeof bool === "boolean") ? bool : !this.showPoints;
-  // }
 
   toggleTiles(bool) {
     // Legacy Code
@@ -121,8 +94,8 @@ class Map {
       my = arguments[1];
     } else if (typeof arguments[0] === "string") {
       if ((arguments[0].toLowerCase() === CENTER) || (arguments[0].toLowerCase() === 'centre')) {
-        mx = (this.SIZE + 1) / 2;
-        my = (this.SIZE + 1) / 2;
+        mx = (this.SIZE-1) / 2;
+        my = (this.SIZE-1) / 2;
       }
     } else {
       throw new Error("Unexpected Input");
@@ -140,24 +113,20 @@ class Map {
   checkFocus() {
     for (let arr of this.tiles) {
       for (let t of arr) {
-        if (t.hit()) {
-          console.log(1);
-          this.selectedTile = t;
-          console.log(m.selectedTile);
-          if (t.unit) this.selectedUnit = t.unit;
+        if (!dragging) {
+          t.setFocussed(false);
+          if (t.hit()) {
+            console.log(1);
+            this.selectedTile = t;
+            t.setFocussed(true);
+            console.log(m.selectedTile);
+            if (t.unit) this.selectedUnit = t.unit;
+          }
         }
       }
     }
   }
 
-  // THIS WAS ME BEING STUPID
-  set selectedTile(tile) {
-    console.log(3);
-    print(tile);
-    if (tile) tile.hasFocus = true;
-    print(`trace at: ${millis()}`);
-    console.trace();
-  }
 
 }
 

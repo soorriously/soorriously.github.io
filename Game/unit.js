@@ -53,7 +53,7 @@ class Unit {
             try {
               let tile = this.map.tiles[this.mapY-j][this.mapX-i];
               this.map.tiles[this.mapY-j][this.mapX-i].highlight();
-              if (tile.hit() && (MousePressed && !pMousePressed)) {
+              if (tile.hit()) {
                 console.log("CLICKED!")
                 this.move(tile);
               }

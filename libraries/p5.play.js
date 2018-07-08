@@ -5,13 +5,15 @@ http://molleindustria.org/
 */
 
 (function(root, factory) {
-if (typeof define === 'function' && define.amd)
-define('p5.play', ['p5'], function(p5) { (factory(p5)); });
-else if (typeof exports === 'object')
-factory(require('../p5'));
-else
-factory(root.p5);
-}(this, function(p5) {
+    if (typeof define === 'function' && define.amd)
+      define('p5.play', ['p5'], function(p5) {
+        (factory(p5));
+      });
+    else if (typeof exports === 'object')
+      factory(require('../p5'));
+    else
+      factory(root.p5);
+  }(this, function(p5) {
 /**
  * p5.play is a library for p5.js to facilitate the creation of games and gamelike
  * projects.

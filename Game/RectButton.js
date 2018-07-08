@@ -104,8 +104,10 @@ class RectButton {
 
   hit() {
     if (this.activated) {
-      if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2) {
-        if (mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
+      if (mouseX > this.x - this.w / 2 &&
+          mouseX < this.x + this.w / 2) {
+        if (mouseY > this.y - this.h / 2 &&
+            mouseY < this.y + this.h / 2) {
           return true;
         }
         return false;
