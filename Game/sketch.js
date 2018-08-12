@@ -1,49 +1,75 @@
 // Map variable
 let m;
-let house;
-let u;
+// let u;
 let dragging = false;
 let unitInfo = {};
-let temp = true;
-let objective = {
-  regular: null,
-  light: null
+let fonts = {
+  objective: {
+    regular: null,
+    light: null
+  },
+  aquatico: {
+    regular: null,
+  }
+};
+let img = {
+  logo: null,
+  bg: null,
+  menuBtn: null,
+  warrior: null,
+  village: null
 }
-let exit = new RectButton();
+let logo;
+let bg;
 
 function preload() {
-  objective.light = loadFont("/Fonts/Objective-Light.otf");
-  objective.regular = loadFont("/Fonts/Objective-Regular.otf");
+  for (let font in fonts) {
+    for (let style in fonts[font]) {
+      fonts[font][style] = loadFont(`/Fonts/${font}-${style}.otf`)
+    }
+  }
+  for (let image in img) {
+    img[image] = loadImage(`Images/${image}.png`);
+  }
+  logo = loadImage("Images/logo.png");
+  bg = loadImage("Images/bg.png");
+  // house = loadImage("/Images/house.png", function() {
+  //   console.log("Done loading after " + floor(millis()) + "ms");
+  // });
 }
 
-
-// function preload() {
-//   house = loadImage("/Images/house.png", function() {
-//     console.log("Done loading after " + floor(millis()) + "ms");
-//   });
-// }
-
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  m = new Map(10, 50);
-  u = new Unit(m, m.tiles[3][3], "warrior");
+  m = new Map(10, 100);
+  m.createUnit(3,3,"warrior");
   for (let type in unitTypes) {
     unitInfo[type] = objToInfo(unitTypes[type], type);
   }
-  for (let x in p5) {
-    console.log(p5[x]);
-  }
+  screens.current = 'MainMenu';
+  m.createUnit(1, 1, 'horseman')
+  m.createUnit(1, 8, 'horseman')
+  m.createUnit(8, 8, 'horseman')
+  m.createUnit(8, 1, 'horseman')
+  m.tiles[1][1].col = color('blue');
+  m.tiles[1][8].col = color('red');
+  m.tiles[1][8].col = color('green');
+  m.tiles[8][8].col = color('yellow');
+  m.tiles[8][1].col = color('orange');
+
 }
 
 function draw() {
-  background(127);
-  m.show();
+  background(0);
+  // m.show();
+  screens.showCurrent();
   // crosshair();
+
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  screens.currentScreen.resizeElt();
 }
 
 function mousePressed() {
@@ -68,17 +94,17 @@ function mouseReleased() {
 }
 
 function mouseClicked() {
+  screens.onClick();
   if (!dragging) {
     m.checkFocus();
   }
 }
 
 function keyPressed() {
-  if (keyCode===ESCAPE) noLoop();
-  if (keyCode===ENTER) loop();
+  if (keyCode === ESCAPE) noLoop();
+  if (keyCode === ENTER) loop();
 }
 
-
-function loadingAnimation() {
-
+function doubleClicked() {
+  m.centerOn(CENTER)
 }

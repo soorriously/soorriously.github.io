@@ -12,10 +12,7 @@ class Unit {
     this.tile = tile;
     this.mapX = this.tile.mapX;
     this.mapY = this.tile.mapY;
-    print(this.mapX);
-    print(this.mapY);
     this.tile.setUnit(this);
-    // player.units.push(this);
   }
 
   show() {
@@ -25,7 +22,11 @@ class Unit {
     } else {
       fill(255);
     }
-    this.info.show(this.tile.SIZE / 4);
+    if (this.type === 'horseman') {
+      this.info.show(this.tile.SIZE)
+    } else {
+      this.info.show(this.tile.SIZE / 1.5);
+    }
   }
 
   attack(unit) {
@@ -52,9 +53,8 @@ class Unit {
           if (!(i == 0 && j == 0)) {
             try {
               let tile = this.map.tiles[this.mapY-j][this.mapX-i];
-              this.map.tiles[this.mapY-j][this.mapX-i].highlight();
-              if (tile.hit()) {
-                console.log("CLICKED!")
+              tile.highlight(color('green'));
+              if (tile.hit() && mouseIsPressed) {
                 this.move(tile);
               }
             } catch(err) {
@@ -66,7 +66,7 @@ class Unit {
     }
   }
 
-  setFocus(bool) {
+  setFocussed(bool) {
     this.hasFocus = bool;
   }
 
@@ -81,10 +81,14 @@ let unitTypes = {
     attack: 2,
     defense: 2,
     health: 10,
-    movement: 1,
+    movement: 2,
     abilities: ['none'],
-    show(wh) {
-      rect(0, 0, wh, wh, 5);
+    show(wh, col) {
+      imageMode(CENTER);
+      rectMode(CENTER);
+      if (col) fill(col);
+      rect(0, 0, wh, wh);
+      image(img.warrior, 0, 0, wh, wh);
     },
   },
   "horseman": {
@@ -94,7 +98,7 @@ let unitTypes = {
     movement: 2,
     abilities: ['none', 'none2', '\nnone'],
     show(wh) {
-      ellipse(0, 0, wh, wh);
+      village(0, 0, wh);
     }
   },
   "potato": {

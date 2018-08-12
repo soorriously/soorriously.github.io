@@ -9,9 +9,7 @@ function polygon(x, y, radius, npoints) {
   let angle = TWO_PI / npoints;
   beginShape();
   for (let a = 0; a < TWO_PI; a += angle) {
-    let newx = x + cos(a) * radius;
-    let newy = y + sin(a) * radius;
-    vertex(sx, sy);
+    vertex(x + cos(a) * radius, y + sin(a) * radius);
   }
   endShape(CLOSE);
 }
@@ -24,7 +22,7 @@ function avgColour() {
       r += red(col);
       g += green(col);
       b += blue(col);
-      a = alpha(col);
+      a += alpha(col);
     }
     r /= arguments.length;
     g /= arguments.length;
@@ -41,13 +39,13 @@ function randomCol() {
   return color(random(255), random(255), random(255));
 }
 
-function city(x, y, wh) {
+function village(x, y, wh) {
   // rectMode(CENTER);
-  // rect(x, y, wh, wh);
-  ellipseMode(CENTER);
-  ellipse(x, y, wh, wh);
-  // imageMode(CENTER);
-  // image(house, x, y, wh, wh);
+  // // rect(x, y, wh, wh);
+  // ellipseMode(CENTER);
+  // ellipse(x, y, wh, wh);
+  imageMode(CENTER);
+  image(img.village, x, y, wh, wh);
 }
 
 function objToInfo(obj, _title) {
@@ -69,9 +67,6 @@ function objToInfo(obj, _title) {
   }
   return info;
 }
-
-
-
 
 function emptySquare(x, y, outsideWidth, insideWidth, color) {
   w = (outsideWidth + insideWidth) / 2;
@@ -95,4 +90,44 @@ function avg() {
     sum += num;
   }
   return sum / arguments.length;
+}
+
+function loadingAnimation() {
+
+}
+
+function textWider(text, font, fontSize, w) {
+  let rtn;
+  push();
+  textFont(font);
+  textSize(fontSize);
+  if (w < textWidth(text) + fontSize / 2) {
+    rtn = textWidth(text) + fontSize / 2;
+  } else {
+    rtn = w;
+  }
+  pop();
+  return rtn;
+}
+
+function textTaller(text, font, fontSize, h) {
+  let rtn;
+  push();
+  textFont(font);
+  textSize(fontSize);
+  let textHeight = textAscent(text) + textDescent(text)
+  if (h < textHeight) {
+    rtn = textHeight;
+  } else {
+    rtn = h;
+  }
+  pop();
+  return rtn;
+}
+
+// Accepts a p5.Color object and return a new p5.Color
+// with halved red, green and blue values
+function darken(col) {
+  col = color(col);
+  return color(red(col) / 2, green(col) / 2, blue(col) / 2);
 }

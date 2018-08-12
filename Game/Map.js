@@ -5,21 +5,6 @@ class Map {
 
   show() {
     if (this.showTiles) {
-      // OLD CODE
-      // for (let i = 0; i < this.SIZE; i++) {
-      //   for (let j = 0; j < this.SIZE; j++) {
-      //     this.tiles[i][j].show(j * this.TILE_SIZE + this.offset.x, i * this.TILE_SIZE + this.offset.y);
-      //     // this.tiles[i][j].show(this.offset.x, this.offset.y);
-      //
-      //     // let f = max(0, noise(0.1 * i, 0.1 * j) - 0.5);
-      //     // let c = this.tiles[i][j].col;
-      //     // fill(c);
-      //     // noStroke();
-      //     // this.tiles[i][j].show(i * this.TILE_SIZE + this.offset.x + this.initOffset.x, j * this.TILE_SIZE - 200 * f + this.offset.y + this.initOffset.y, this.TILE_SIZE);
-      //     // fill(red(c) / 2, green(c) / 2, blue(c) / 2);
-      //     // rect(i * this.TILE_SIZE, (j + 1) * this.TILE_SIZE - 200 * f, this.TILE_SIZE, this.TILE_SIZE + 200 * f);
-      //   }
-      // }
       for (let arr of this.tiles) {
         for (let tile of arr) {
           tile.update(tile.mapX * tile.SIZE + this.offset.x,
@@ -31,14 +16,12 @@ class Map {
   }
 
   update() {
-    // if (this.selectedTile) this.selectedTile.highlight("focus");
+
   }
 
   pan() {
     this.offset.x = mouseX - this.mouse.x + this.pOffset.x
-    //this.offset.x = constrain(this.offset.x, - width / 2, width / 2);
     this.offset.y = mouseY - this.mouse.y + this.pOffset.y
-    //this.offset.y = constrain(this.offset.y, -height / 2, height / 2);
   }
 
   reset(SIZE, TILE_SIZE) {
@@ -55,8 +38,6 @@ class Map {
     // Previous offset
     this.pOffset = createVector(0, 0);
 
-    // this.initOffset = createVector(0, 0);
-    // this.initOffset.set(this.offset);
 
     // vector to store mouse position for panning
     this.mouse = createVector(mouseX, mouseY);
@@ -78,22 +59,20 @@ class Map {
       }
     }
     this.centreOn(CENTER);
+    this.units = [];
   }
 
   toggleTiles(bool) {
-    // Legacy Code
-    // if (typeof bool === "boolean") return this.showTiles = bool;
-    // return this.showTiles = !this.showTiles;
     this.showTiles = (typeof bool === "boolean") ? bool : !this.showTiles;
   }
 
   centreOn() {
     let mx, my;
     if (typeof arguments[0] === "number" && typeof arguments[1] ==="number") {
-      mx = arguments[0];
-      my = arguments[1];
+      mx = constrain(arguments[0], 0, this.SIZE - 1);
+      my = constrain(arguments[1], 0, this.SIZE - 1);;
     } else if (typeof arguments[0] === "string") {
-      if ((arguments[0].toLowerCase() === CENTER) || (arguments[0].toLowerCase() === 'centre')) {
+      if ((arguments[0].toLowerCase() === 'center') || (arguments[0].toLowerCase() === 'centre')) {
         mx = (this.SIZE-1) / 2;
         my = (this.SIZE-1) / 2;
       }
@@ -116,18 +95,21 @@ class Map {
         if (!dragging) {
           t.setFocussed(false);
           if (t.hit()) {
-            console.log(1);
             this.selectedTile = t;
             t.setFocussed(true);
-            console.log(m.selectedTile);
-            if (t.unit) this.selectedUnit = t.unit;
+            if (t.unit) {
+              this.selectedUnit = t.unit;
+              t.unit.setFocussed(true);
+            }
           }
         }
       }
     }
   }
 
-
+  createUnit(mapX, mapY, unitType, player) {
+    this.units.push(new Unit(this, this.tiles[mapY][mapX], unitType));
+  }
 }
 
 /* HELPFUL STUFF
