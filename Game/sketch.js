@@ -17,6 +17,7 @@ let img = {
   bg: null,
   menuBtn: null,
   warrior: null,
+  horseman: null,
   village: null
 }
 let logo;
@@ -41,30 +42,19 @@ function preload() {
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
   frameRate(60);
-  m = new Map(10, 100);
-  m.createUnit(3,3,"warrior");
+  m = new Map(11, 100);
+  m.createUnit(0, 0, "horseman", 'poop');
+  m.createUnit(4, 4, "warrior", 'popo');
   for (let type in unitTypes) {
     unitInfo[type] = objToInfo(unitTypes[type], type);
   }
-  screens.current = 'MainMenu';
-  m.createUnit(1, 1, 'horseman')
-  m.createUnit(1, 8, 'horseman')
-  m.createUnit(8, 8, 'horseman')
-  m.createUnit(8, 1, 'horseman')
-  m.tiles[1][1].col = color('blue');
-  m.tiles[1][8].col = color('red');
-  m.tiles[1][8].col = color('green');
-  m.tiles[8][8].col = color('yellow');
-  m.tiles[8][1].col = color('orange');
+  screens.current = 'Game';
 
 }
 
 function draw() {
   background(0);
-  // m.show();
   screens.showCurrent();
-  // crosshair();
-
 }
 
 function windowResized() {
@@ -82,29 +72,16 @@ function mouseDragged() {
   m.pan();
 }
 
-function mouseReleased() {
-  if (dragging) {
-    dragging = false;
-    for (let arr of m.tiles) {
-      for (let t of arr) {
-        t.hasFocus = false;
-      }
-    }
-  }
-}
-
 function mouseClicked() {
   screens.onClick();
   if (!dragging) {
     m.checkFocus();
   }
+  dragging = false;
 }
 
+// FOR DEBUGGING PURPOSES
 function keyPressed() {
   if (keyCode === ESCAPE) noLoop();
   if (keyCode === ENTER) loop();
-}
-
-function doubleClicked() {
-  m.centerOn(CENTER)
 }

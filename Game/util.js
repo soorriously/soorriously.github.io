@@ -69,12 +69,14 @@ function objToInfo(obj, _title) {
 }
 
 function emptySquare(x, y, outsideWidth, insideWidth, color) {
+  push();
   w = (outsideWidth + insideWidth) / 2;
   noFill();
   stroke(color);
   rectMode(CENTER);
   strokeWeight((outsideWidth - insideWidth) / 2);
-  rect(0, 0, w, w);
+  rect(x, y, w, w);
+  pop();
 }
 
 function crosshair() {

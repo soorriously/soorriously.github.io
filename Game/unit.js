@@ -1,36 +1,57 @@
 class Unit {
-  constructor(map, tile, type) {
-    this.reset(map, tile, type);
+  constructor(map, tile, type, player) {
+    this.reset(map, tile, type, player);
   }
 
-  reset(map, tile, type) {
+  reset(map, tile, type, player) {
     // this.player = player;
     this.map = map;
     this.hasFocus = false;
     this.type = type;
-    this.info = unitTypes[type]
+    this.info = unitTypes[type];
+    this.maxHp = this.info.health;
+    this.hp = this.info.health;
+    this.atk = this.info.attack;
+    this.def = this.info.defence;
     this.tile = tile;
     this.mapX = this.tile.mapX;
     this.mapY = this.tile.mapY;
+    this.pos = this.tile.pos;
     this.tile.setUnit(this);
+    console.log(player)
+    this.player = player;
   }
 
   show() {
-    if (this.hasFocus) {
-      fill(0);
-      this.showMovement();
-    } else {
-      fill(255);
-    }
-    if (this.type === 'horseman') {
-      this.info.show(this.tile.SIZE)
-    } else {
-      this.info.show(this.tile.SIZE / 1.5);
-    }
+    push();
+    translate(this.pos.x, this.pos.y);
+    if (this === this.map.selectedUnit) tint(127, 127, 127);
+    this.info.show(this.tile.SIZE / 1.5);
+    fill(color('white'));
+    textSize(this.tile.SIZE / 4);
+    textAlign(TOP, LEFT);
+    textFont(fonts.objective.regular);
+    text(`${this.hp}/${this.maxHp}`, -this.tile.SIZE * 5 / 12, +this.tile.SIZE * 5 / 12);
+    pop();
+  }
+
+  update() {
+    this.pos = this.tile.pos;
   }
 
   attack(unit) {
+    let atk = this.atk * this.hp / this.maxHp;
+    let def = unit.def * unit.hp / this.maxHp;
+    let total = atk + def;
+    let dmg = round(atk / total * this.atk * 4.5);
+    unit.damage(dmg);
+  }
 
+  damage(dmg) {
+    this.hp -= (floor(dmg)) ? floor(dmg) : 1;
+    if (this.hp <= 0) {
+      m.removeUnit(this);
+    }
   }
 
   showInfo() {
@@ -41,24 +62,46 @@ class Unit {
     this.tile.unit = null
     this.tile = tile;
     tile.unit = this;
-    this.mapX = this.tile.mapX;
-    this.mapY = this.tile.mapY;
+    this.mapX = tile.mapX;
+    this.mapY = tile.mapY;
     this.hasFocus = false;
+    this.pos = tile.pos;
   }
 
-  showMovement() {
-    if (this.hasFocus) {
-      for (let i = -this.info.movement; i <= this.info.movement; i++) {
-        for (let j = -this.info.movement; j <= this.info.movement; j++) {
-          if (!(i == 0 && j == 0)) {
-            try {
-              let tile = this.map.tiles[this.mapY-j][this.mapX-i];
-              tile.highlight(color('green'));
-              if (tile.hit() && mouseIsPressed) {
-                this.move(tile);
+  canMove(tile) {
+    if (abs(tile.mapX - this.mapX) <= this.info.movement &&
+        abs(tile.mapY - this.mapY) <= this.info.movement) {
+      if (tile.unit) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  canHit(unit) {
+    if (abs(unit.mapX - this.mapX) <= this.info.range &&
+        abs(unit.mapY - this.mapY) <= this.info.movement) {
+      if (unit.player !== this.player) {
+        return true;
+      }
+      return false
+    }
+    return false;
+  }
+
+  showMoves() {
+    for (let i = this.mapX - this.info.movement; i <= this.mapX + this.info.movement; i++) {
+      if (i >= 0 && i < this.map.SIZE) {
+        for (let j = this.mapY - this.info.movement; j <= this.mapY + this.info.movement; j++) {
+          if (j >= 0 && j < this.map.SIZE) {
+            if (!(j === this.mapY && i === this.mapX)) {
+              let tile = this.map.tiles[j][i];
+              if (tile.unit && this.canHit(tile.unit)) {
+                tile.highlight(color('red'), tile.SIZE * 0.9375);
+              } else {
+                tile.highlight(color('green'), tile.SIZE * 0.9375);
               }
-            } catch(err) {
-              // DO NOTHING
             }
           }
         }
@@ -70,47 +113,41 @@ class Unit {
     this.hasFocus = bool;
   }
 
-  resetPos(map, tile) {
-
-  }
-
 }
 
 let unitTypes = {
   "warrior": {
     attack: 2,
-    defense: 2,
+    defence: 2,
     health: 10,
-    movement: 2,
-    abilities: ['none'],
-    show(wh, col) {
+    movement: 1,
+    range: 1,
+    show(wh) {
       imageMode(CENTER);
       rectMode(CENTER);
-      if (col) fill(col);
-      rect(0, 0, wh, wh);
       image(img.warrior, 0, 0, wh, wh);
     },
   },
   "horseman": {
     attack: 2,
-    defense: 1,
+    defence: 1,
     health: 10,
     movement: 2,
-    abilities: ['none', 'none2', '\nnone'],
+    range: 1,
     show(wh) {
-      village(0, 0, wh);
+      imageMode(CENTER);
+      image(img.horseman, 0, 0, wh, wh);
     }
   },
   "potato": {
-    attack:999,
-    defense:999,
-    health:999,
-    movement:10,
-    abilities: ['potato'],
+    attack: 999,
+    health: 999,
+    movement: 10,
+    range: 10,
     show(wh) {
-      polygon(0,0,wh/2,3);
-      fill(255,0,0);
-      ellipse(0,0, wh - 10, wh - 10);
+      polygon(0, 0, wh / 2, 3);
+      fill(255, 0, 0);
+      ellipse(0, 0, wh - 10, wh - 10);
     }
   }
 }

@@ -204,6 +204,7 @@ let screens = {
           stroke: false,
           text: '2',
           textSize: width / 20,
+          textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
             function() {
@@ -227,6 +228,7 @@ let screens = {
           stroke: false,
           text: '3',
           textSize: width / 20,
+          textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
             function() {
@@ -250,6 +252,7 @@ let screens = {
           stroke: false,
           text: '4',
           textSize: width / 20,
+          textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
             function() {
