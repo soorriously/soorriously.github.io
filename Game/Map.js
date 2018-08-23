@@ -201,13 +201,13 @@ class Map {
     this.tiles[my][mx].village = village;
     player.village = village;
     // Create the player's units around their village
-    // this.createUnit(mx-1, my, "warrior", player);
-    // this.createUnit(mx+1, my, "warrior", player)
-    // this.createUnit(mx, my-1, "warrior", player);
-    // this.createUnit(mx, my+1, "warrior", player);
-    // this.createUnit(mx-1, my-1, "horseman", player);
-    // this.createUnit(mx+1, my+1, "horseman", player)
-    // this.createUnit(mx+1, my-1, "horseman", player);
+    this.createUnit(mx-1, my, "warrior", player);
+    this.createUnit(mx+1, my, "warrior", player)
+    this.createUnit(mx, my-1, "warrior", player);
+    this.createUnit(mx, my+1, "warrior", player);
+    this.createUnit(mx-1, my-1, "horseman", player);
+    this.createUnit(mx+1, my+1, "horseman", player)
+    this.createUnit(mx+1, my-1, "horseman", player);
     this.createUnit(mx-1, my+1, "horseman", player);
   }
 
