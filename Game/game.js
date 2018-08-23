@@ -3,8 +3,8 @@ class Map {
     this.reset(SIZE, TILE_SIZE, players);
   }
 
+  // displays the map in the canvas
   show() {
-
     if (this.showTiles) {
       this.tiles.forEach(arr => {
         arr.forEach(tile => {
@@ -24,6 +24,7 @@ class Map {
     this.turnIndicator();
   }
 
+  // changes the translation offset of the map to allow panning
   pan() {
     let x = constrain(mouseX - this.mouse.x + this.pOffset.x,
                       - this.TILE_SIZE * 19 / 2,
@@ -35,6 +36,7 @@ class Map {
     this.offset.y = y
   }
 
+  // resets the map
   reset(SIZE, TILE_SIZE, players) {
     this.SIZE = int(SIZE);
     this.TILE_SIZE = int(TILE_SIZE);
@@ -109,10 +111,7 @@ class Map {
 
   }
 
-  toggleTiles(bool) {
-    this.showTiles = (typeof bool === "boolean") ? bool : !this.showTiles;
-  }
-
+  // centre on a certain tile in the map
   centreOn() {
     let mx, my;
     if (typeof arguments[0] === "number" && typeof arguments[1] === "number") {
@@ -132,10 +131,7 @@ class Map {
     this.offset.set(createVector(x, y));
   }
 
-  showOffsets() {
-    console.log("offset: " + this.offset);
-  }
-
+  // check which tile the mouse is over
   checkFocus() {
     this.selectedTile = null;
     for (let arr of this.tiles) {
@@ -176,12 +172,14 @@ class Map {
 
   }
 
+  // create a unit on the map on a certain tile and assign it to a player
   createUnit(mapX, mapY, unitType, player) {
     let u = new Unit(this, this.tiles[mapY][mapX], unitType, player)
     this.units.push(u);
     player.units.push(u);
   }
 
+  // delete a unit
   removeUnit(unit) {
     this.units = this.units.filter(u => u !== unit);
     unit.tile.unit = null;
@@ -189,6 +187,7 @@ class Map {
     unit = null;
   }
 
+  // create a village
   createVillage(mx, my, player) {
     let village = {
       owner: player,
@@ -245,6 +244,7 @@ class Map {
     }
   }
 
+  // shows whose turn it is
   turnIndicator() {
     let txt = `Player ${this.cp.id + 1}'s turn`;
     rectMode(CORNER);
@@ -258,6 +258,7 @@ class Map {
     text(txt, width * 0.99, width / 20);
   }
 
+  // remove a player when they have lost
   removePlayer(player) {
     player.units.forEach(u => this.removeUnit(u));
     let mx = player.village.mapPos.x;
@@ -300,16 +301,19 @@ class RectButton {
     }
   }
 
+  // changes some of the options associated with the button
   config(options) {
     for (let option in options) {
       this[option] = options[option];
     }
   }
 
+  // toggles the button
   toggle(bool) {
     this.activated = (typeof bool === 'boolean') ? bool : !this.activated;
   }
 
+  // shows the button in the canvas
   show() {
     push();
     translate(this.position.x, this.position.y)
@@ -346,6 +350,7 @@ class RectButton {
     pop();
   }
 
+  // returns true if the mouse is over the button
   hit() {
     if (this.activated) {
       return mouseX > this.position.x - this.w / 2 &&
@@ -356,6 +361,7 @@ class RectButton {
     return false;
   }
 
+  // runs the functions in onClick when the button is clicked
   clicked() {
     if (this.hit() && this.activated) {
       for (let func of this.onClick) {
@@ -364,9 +370,7 @@ class RectButton {
     }
 
   }
-
 }
-
 class imgButton {
   constructor(options) {
     this.w = 50;
@@ -392,12 +396,14 @@ class imgButton {
     }
   }
 
+  // changes some of the options associated with the button
   config(options) {
     for (let id in options) {
       this[id] = options[id];
     }
   }
 
+  // shows the button in the canvas
   show() {
     push();
     translate(this.position.x, this.position.y);
@@ -424,10 +430,12 @@ class imgButton {
     pop();
   }
 
+  // toggles the button
   toggle(bool) {
     this.activated = (typeof bool === 'boolean') ? bool : !this.activated;
   }
 
+  // returns true if the mouse is over the button
   hit() {
     if (this.activated) {
       return mouseX > this.position.x - this.w / 2 &&
@@ -438,6 +446,7 @@ class imgButton {
     return false;
   }
 
+  // runs the functions in onClick when the button is clicked
   clicked() {
     if (this.hit() && this.activated) {
       for (let func of this.onClick) {
@@ -445,7 +454,6 @@ class imgButton {
       }
     }
   }
-
 }
 class Player {
   constructor(id) {
@@ -457,6 +465,7 @@ class Player {
     this.village = null;
   }
 
+  // sets the village associated with this player
   setVillage(village) {
     this.village = village;
   }
@@ -542,6 +551,7 @@ class Unit {
     this.reset(map, tile, type, player);
   }
 
+  // resets the unit
   reset(map, tile, type, player) {
     this.map = map;
     this.hasFocus = false;
@@ -561,6 +571,7 @@ class Unit {
     this.attacked = false;
   }
 
+  // displays the unit in the canvas
   show() {
     push();
     translate(this.pos.x, this.pos.y);
@@ -573,10 +584,12 @@ class Unit {
     pop();
   }
 
+  // updates the position of the unit in the canvas
   update() {
     this.pos = this.tile.pos;
   }
 
+  // calculates damage taken by the attacked unit
   attack(unit) {
     let atk = this.atk * this.hp / this.maxHp;
     let def = unit.def * unit.hp / this.maxHp;
@@ -586,6 +599,7 @@ class Unit {
     this.attacked = true;
   }
 
+  // inflicts damage on the unit
   damage(dmg) {
     this.hp -= (floor(dmg)) ? floor(dmg) : 1;
     if (this.hp <= 0) {
@@ -593,10 +607,7 @@ class Unit {
     }
   }
 
-  showInfo() {
-
-  }
-
+  // moves the unit to a given tile
   move(tile) {
     if (this.player === this.map.cp) {
       if (!this.player.moved) {
@@ -621,6 +632,7 @@ class Unit {
     }
   }
 
+  // checks whether the unit can move to a given tile
   canMove(tile) {
     if (abs(tile.mapX - this.mapX) <= this.info.movement &&
         abs(tile.mapY - this.mapY) <= this.info.movement) {
@@ -632,6 +644,7 @@ class Unit {
     return false;
   }
 
+  // checks whether the unit can hit another unit
   canHit(unit) {
     if (abs(unit.mapX - this.mapX) <= this.info.range &&
         abs(unit.mapY - this.mapY) <= this.info.range) {
@@ -643,6 +656,7 @@ class Unit {
     return false;
   }
 
+  // shows all the moves that a player can take
   showMoves() {
     if (this.map.cp === this.player) {
       for (let i = this.mapX - this.info.movement;
@@ -668,11 +682,13 @@ class Unit {
     }
   }
 
+  // set the focus of the unit
   setFocussed(bool) {
     this.hasFocus = bool;
   }
 }
 
+// different types of units
 let unitTypes = {
   "warrior": {
     attack: 2,
@@ -697,6 +713,7 @@ let unitTypes = {
     }
   }
 }
+
 // Creates a new array of length rows then returns a new array
 // where each item is an array of length cols
 function make2DArray(rows, cols = rows) {
@@ -715,7 +732,6 @@ function emptySquare(x, y, outsideWidth, insideWidth, color) {
   rect(x, y, w, w);
   pop();
 }
-
 
 // Checks whether text is wider than a specified width
 // and returns either the height of the text or the
@@ -759,6 +775,7 @@ function darken(col) {
   return color(red(col) / 2, green(col) / 2, blue(col) / 2);
 }
 
+// stores each individual screen and methods to interact with them
 let screens = {
   currentScreen: null,
   set current(scrn) {
@@ -1503,10 +1520,4 @@ function mouseClicked() {
     if (m) m.checkFocus();
   }
   dragging = false;
-}
-
-// FOR DEBUGGING PURPOSES
-function keyPressed() {
-  if (keyCode === ESCAPE) noLoop();
-  if (keyCode === ENTER) loop();
 }
