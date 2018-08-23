@@ -4,7 +4,6 @@ class Unit {
   }
 
   reset(map, tile, type, player) {
-    // this.player = player;
     this.map = map;
     this.hasFocus = false;
     this.type = type;
@@ -18,8 +17,9 @@ class Unit {
     this.mapY = this.tile.mapY;
     this.pos = this.tile.pos;
     this.tile.setUnit(this);
-    console.log(player)
     this.player = player;
+    this.moved = false;
+    this.attacked = false;
   }
 
   show() {
@@ -27,9 +27,9 @@ class Unit {
     translate(this.pos.x, this.pos.y);
     if (this === this.map.selectedUnit) tint(127, 127, 127);
     this.info.show(this.tile.SIZE / 1.5);
-    fill(color('white'));
+    fill(this.player.colour);
     textSize(this.tile.SIZE / 4);
-    textAlign(TOP, LEFT);
+    textAlign(LEFT, BOTTOM);
     textFont(fonts.objective.regular);
     text(`${this.hp}/${this.maxHp}`, -this.tile.SIZE * 5 / 12, +this.tile.SIZE * 5 / 12);
     pop();
@@ -45,6 +45,7 @@ class Unit {
     let total = atk + def;
     let dmg = round(atk / total * this.atk * 4.5);
     unit.damage(dmg);
+    this.attacked = true;
   }
 
   damage(dmg) {
@@ -59,13 +60,28 @@ class Unit {
   }
 
   move(tile) {
-    this.tile.unit = null
-    this.tile = tile;
-    tile.unit = this;
-    this.mapX = tile.mapX;
-    this.mapY = tile.mapY;
-    this.hasFocus = false;
-    this.pos = tile.pos;
+    if (this.player === this.map.cp) {
+      if (!this.player.moved) {
+        this.tile.unit = null
+        this.tile = tile;
+        tile.unit = this;
+        this.mapX = tile.mapX;
+        this.mapY = tile.mapY;
+        this.hasFocus = false;
+        this.pos = tile.pos;
+        this.player.moved = true;
+        if (tile.village) {
+          if (tile.village.owner !== this.player) {
+            console.log(this.map.turnCount, "s");
+            tile.village.enemyStartTurn = this.map.turnCount;
+            tile.village.attackedBy = this.player;
+          } else {
+            tile.village.enemyStartTurn = null;
+            tile.village.attackedBy = null;
+          }
+        }
+      }
+    }
   }
 
   canMove(tile) {
@@ -91,16 +107,22 @@ class Unit {
   }
 
   showMoves() {
-    for (let i = this.mapX - this.info.movement; i <= this.mapX + this.info.movement; i++) {
-      if (i >= 0 && i < this.map.SIZE) {
-        for (let j = this.mapY - this.info.movement; j <= this.mapY + this.info.movement; j++) {
-          if (j >= 0 && j < this.map.SIZE) {
-            if (!(j === this.mapY && i === this.mapX)) {
-              let tile = this.map.tiles[j][i];
-              if (tile.unit && this.canHit(tile.unit)) {
-                tile.highlight(color('red'), tile.SIZE * 0.9375);
-              } else {
-                tile.highlight(color('green'), tile.SIZE * 0.9375);
+    if (this.map.cp === this.player) {
+      for (let i = this.mapX - this.info.movement;
+           i <= this.mapX + this.info.movement; i++) {
+        if (i >= 0 && i < this.map.SIZE) {
+          for (let j = this.mapY - this.info.movement;
+               j <= this.mapY + this.info.movement; j++) {
+            if (j >= 0 && j < this.map.SIZE) {
+              if (!(j === this.mapY && i === this.mapX)) {
+                let tile = this.map.tiles[j][i];
+                if (tile.unit) {
+                  if (this.canHit(tile.unit) && !this.attacked) {
+                    tile.highlight(color('red'), tile.SIZE * 0.9375);
+                  }
+                } else if (!this.player.moved) {
+                  tile.highlight(color('green'), tile.SIZE * 0.9375);
+                }
               }
             }
           }
@@ -112,19 +134,17 @@ class Unit {
   setFocussed(bool) {
     this.hasFocus = bool;
   }
-
 }
 
 let unitTypes = {
   "warrior": {
     attack: 2,
     defence: 2,
-    health: 10,
+    health: 15,
     movement: 1,
     range: 1,
     show(wh) {
       imageMode(CENTER);
-      rectMode(CENTER);
       image(img.warrior, 0, 0, wh, wh);
     },
   },
@@ -137,17 +157,6 @@ let unitTypes = {
     show(wh) {
       imageMode(CENTER);
       image(img.horseman, 0, 0, wh, wh);
-    }
-  },
-  "potato": {
-    attack: 999,
-    health: 999,
-    movement: 10,
-    range: 10,
-    show(wh) {
-      polygon(0, 0, wh / 2, 3);
-      fill(255, 0, 0);
-      ellipse(0, 0, wh - 10, wh - 10);
     }
   }
 }

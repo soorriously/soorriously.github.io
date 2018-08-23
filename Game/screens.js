@@ -41,6 +41,7 @@ let screens = {
         textSize: (width + height) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+
           function() {
             screens.current = 'GameSetup';
           }
@@ -63,6 +64,7 @@ let screens = {
         textSize: (width + height) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+
           function() {
             screens.current = 'Help';
           }
@@ -85,6 +87,7 @@ let screens = {
         textSize: (width + height) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+
           function() {
             screens.current = 'Settings';
           }
@@ -95,10 +98,10 @@ let screens = {
     show() {
       background(255);
       imageMode(CENTER);
-      image(bg, width / 2, height / 2, width, height);
+      image(img.bg, width / 2, height / 2, width, height);
       let logow = width / 1.5 + 50 * sin(frameCount / 30);
-      let logoh = logow * logo.height / logo.width;
-      image(logo, width / 2, height / 4, logow, logoh);
+      let logoh = logow * img.logo.height / img.logo.width;
+      image(img.logo, width / 2, height / 4, logow, logoh);
       for (let id in this.buttons) {
         this.buttons[id].show();
       }
@@ -161,8 +164,9 @@ let screens = {
         textSize: (width + height) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+          winner = null,
           function() {
-            // screens.current = 'Game';
+            screens.current = 'Game';
           }
         ],
         activated: true
@@ -183,6 +187,7 @@ let screens = {
         textSize: (width + height ) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+
           function() {
             screens.current = 'MainMenu';
           }
@@ -207,10 +212,12 @@ let screens = {
           textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
+
             function() {
               screens.currentScreen.buttons.playerSelect.opt2.selected = true;
               screens.currentScreen.buttons.playerSelect.opt3.selected = false;
               screens.currentScreen.buttons.playerSelect.opt4.selected = false;
+              numPlayers = 2;
             }
           ]
         }),
@@ -231,10 +238,12 @@ let screens = {
           textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
+
             function() {
               screens.currentScreen.buttons.playerSelect.opt2.selected = false;
               screens.currentScreen.buttons.playerSelect.opt3.selected = true;
               screens.currentScreen.buttons.playerSelect.opt4.selected = false;
+              numPlayers = 3;
             }
           ]
         }),
@@ -255,10 +264,12 @@ let screens = {
           textColour: color('white'),
           font: fonts.aquatico.regular,
           onClick: [
+
             function() {
               screens.currentScreen.buttons.playerSelect.opt2.selected = false;
               screens.currentScreen.buttons.playerSelect.opt3.selected = false;
               screens.currentScreen.buttons.playerSelect.opt4.selected = true;
+              numPlayers = 4;
             }
           ]
         }),
@@ -294,7 +305,7 @@ let screens = {
       }
       background(255);
       imageMode(CENTER);
-      image(bg, width / 2, height / 2, width, height);
+      image(img.bg, width / 2, height / 2, width, height);
       textFont(fonts.aquatico.regular);
       textSize((width + height) / 25);
       textAlign(CENTER, CENTER);
@@ -382,6 +393,7 @@ let screens = {
         textSize: (width + height ) / 40,
         font: fonts.aquatico.regular,
         onClick: [
+
           function() {
             screens.current = 'MainMenu';
           }
@@ -392,68 +404,246 @@ let screens = {
     show() {
       background(255);
       imageMode(CENTER);
-      image(bg, width / 2, height / 2, width, height);
+      image(img.bg, width / 2, height / 2, width, height);
       textFont(fonts.aquatico.regular);
       textSize((width + height) / 25);
       textAlign(CENTER, CENTER);
       fill(0);
       text("HELP", width / 2, height / 14);
-      text("YOU'RE FECKED", width / 2 , height / 2);
+      textAlign(CENTER, LEFT);
+      rectMode(CENTER);
+      textSize((width + height) / 80);
+      text("Press the big START button in the main menu. Select the number of players by clicking on that number. Now press START to start playing.\nTo pan around the map, click anywhere and drag. To move a unit select it by clicking on it and click a highlighted tile. To attack another unit, click the attacking unit and select a unit that is in range (denoted by it being highlighted).", width / 2 , height / 2, width * 2 / 3, height / 2);
       for (let id in this.buttons) {
         this.buttons[id].show();
       }
     },
     resizeElt() {
-      this.buttons.start.config({
+      this.buttons.mainmenu.config({
         position: {
           x: width / 2,
-          y: 8 * height / 16
+          y: 14 * height / 16
         },
-        w: textWider('START', fonts.aquatico.regular, (width + height) / 30, width / 4),
-        h: height / 10,
-        textSize: (width + height) / 30
-      });
-      this.buttons.help.config({
-        position: {
-          x: width / 2,
-          y: 10 * height / 16
-        },
-        w: textWider('START', fonts.aquatico.regular, (width + height) / 30, width / 4),
-        h: height / 10,
-        textSize: width / 20
+        w: textWider('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        textSize: (width + height) / 40
       });
     }
   },
   Game: {
     buttons: {
-      menu: null
+      endTurn: null
     },
     clear() {
-
+      m = null;
     },
     init() {
-      this.menu = new imgButton({
+      this.buttons.endTurn = new RectButton({
         position: {
-          x: width / 40,
+          x: textWider('END TURN', fonts.aquatico.regular, (width + height) / 40, 0) / 2,
           y: width / 40
         },
-        w: width / 20,
+        w: textWider('END TURN', fonts.aquatico.regular, (width + height) / 40, 0),
         h: width / 20,
-        img: img.menuBtn,
-        label: "MENU",
-        labelFont: fonts.aquatico.regular,
-        labelFontSize: width / 70
+        sizeMode: 'fixed',
+        fillColour: color('blue'),
+        hitColour: color('orange'),
+        stroke: false,
+        text: "END TURN",
+        textColour: color('white'),
+        textSize: (width + height) / 40,
+        font: fonts.aquatico.regular,
+        onClick: [
+
+          function() {
+            m.nextPlayer();
+          }
+        ],
+        activated: true
       });
+      m = new Map(11, 100, new Array(numPlayers).fill().map(e => new Player()));
     },
     show() {
       m.show();
-      this.menu.show();
+      for (let id in this.buttons) {
+        this.buttons[id].show();
+      }
     },
     resizeElt() {
-
+      this.buttons.endTurn.config({
+        position: {
+          x: textWider('END TURN', fonts.aquatico.regular, (width + height) / 40, 0) / 2,
+          y: width / 40
+        },
+        w: textWider('END TURN', fonts.aquatico.regular, (width + height) / 40, 0),
+        h: width / 20,
+        textSize: (width + height) / 40
+      });
     }
   },
   Settings: {
+    buttons: {
+      mainmenu: null,
+      music: null
+    },
+    clear() {
+      for (let id in this.buttons) {
+        this.buttons[id] = null;
+      }
+    },
+    init() {
+      this.buttons.mainmenu = new RectButton({
+        position: {
+          x: width / 2,
+          y: 14 * height / 16
+        },
+        w: textWider('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        sizeMode: 'fixed',
+        fillColour: color('blue'),
+        hitColour: color('orange'),
+        stroke: false,
+        text: "MAIN MENU",
+        textColour: color('white'),
+        textSize: (width + height ) / 40,
+        font: fonts.aquatico.regular,
+        onClick: [
 
+          function() {
+            screens.current = 'MainMenu';
+          }
+        ],
+        activated: true
+      });
+      this.buttons.music = new RectButton({
+        position: {
+          x: width / 2,
+          y: 7 * height / 20
+        },
+        w: textWider('OFF', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('OFF', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        sizeMode: 'fixed',
+        fillColour: color('blue'),
+        hitColour: color('orange'),
+        stroke: false,
+        text: "ON",
+        textColour: color('white'),
+        textSize: (width + height ) / 40,
+        font: fonts.aquatico.regular,
+        onClick: [
+          function() {
+            if (sounds.bgMusic.isPlaying()) {
+              sounds.bgMusic.pause();
+            } else {
+              sounds.bgMusic.loop();
+            }
+            let txt = screens.currentScreen.buttons.music.text;
+            if (txt === 'ON') {
+              screens.currentScreen.buttons.music.text = 'OFF';
+            } else {
+              screens.currentScreen.buttons.music.text = 'ON';
+            }
+          }
+        ],
+        activated: true
+      });
+    },
+    show() {
+      background(255);
+      imageMode(CENTER);
+      image(img.bg, width / 2, height / 2, width, height);
+      textFont(fonts.aquatico.regular);
+      textSize((width + height) / 25);
+      textAlign(CENTER, CENTER);
+      fill(0);
+      text("SETTINGS", width / 2, height / 14);
+      textSize((width + height) / 35);
+      text("MUSIC", width / 2, height / 5);
+      for (let id in this.buttons) {
+        this.buttons[id].show();
+      }
+    },
+    resizeElt() {
+      this.buttons.mainmenu.config({
+        position: {
+          x: width / 2,
+          y: 14 * height / 16
+        },
+        w: textWider('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        textSize: (width + height) / 40
+      });
+      this.buttons.music.config({
+        position: {
+          x: width / 2,
+          y: 7 * height / 20
+        },
+        w: textWider('OFF', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('OFF', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        textSize: (width + height ) / 40
+      })
+    }
+  },
+  gameFinished: {
+    buttons: {
+      mainmenu: null
+    },
+    clear() {
+      for (let id in this.buttons) {
+        this.buttons[id] = null;
+      }
+    },
+    init() {
+      this.buttons.mainmenu = new RectButton({
+        position: {
+          x: width / 2,
+          y: 14 * height / 16
+        },
+        w: textWider('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        sizeMode: 'fixed',
+        fillColour: color('blue'),
+        hitColour: color('orange'),
+        stroke: false,
+        text: "MAIN MENU",
+        textColour: color('white'),
+        textSize: (width + height ) / 40,
+        font: fonts.aquatico.regular,
+        onClick: [
+
+          function() {
+            screens.current = 'MainMenu';
+          }
+        ],
+        activated: true
+      });
+    },
+    show() {
+      background(255);
+      imageMode(CENTER);
+      image(img.bg, width / 2, height / 2, width, height);
+      textFont(fonts.aquatico.regular);
+      textSize((width + height) / 25);
+      textAlign(CENTER, CENTER);
+      fill(0);
+      text("GAME OVER!", width / 2, height / 14);
+      textSize((width + height) / 35);
+      fill(winner.colour);
+      text(`CONGRATULATIONS!\nPLAYER ${winner.id + 1}\nhas won the game!`, width / 2, height / 3);
+      for (let id in this.buttons) {
+        this.buttons[id].show();
+      }
+    },
+    resizeElt() {
+      this.buttons.mainmenu.config({
+        position: {
+          x: width / 2,
+          y: 14 * height / 16
+        },
+        w: textWider('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, width / 4),
+        h: textTaller('MAIN MENU', fonts.aquatico.regular, (width + height) / 30, height / 10),
+        textSize: (width + height) / 40
+      });
+    }
   }
 }

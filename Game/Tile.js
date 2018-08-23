@@ -3,7 +3,7 @@ class Tile {
     this.reset(map, mapX, mapY);
   }
 
-  // displays the Tile in the canvas
+  // Display the Tile in the canvas
   show() {
     push();
     translate(this.pos.x, this.pos.y);
@@ -13,7 +13,10 @@ class Tile {
     strokeWeight(1);
     fill(this.col);
     rect(0, 0, this.SIZE, this.SIZE);
-    if (this.village) image(img.village, 0, 0, this.SIZE, this.SIZE);
+    if (this.village) {
+      tint(this.village.owner.colour);
+      image(img.village, 0, 0, this.SIZE, this.SIZE)
+    };
     pop();
     if (this.hit()) {
       this.highlight(this.hitCol);
@@ -22,6 +25,7 @@ class Tile {
     }
   }
 
+  // Update the position of the Tile
   update(x, y) {
     this.pos.set(x, y);
     if (this.unit) this.unit.update();
@@ -35,18 +39,20 @@ class Tile {
             mouseY < this.pos.y + this.SIZE / 2);
   }
 
+  // Highlight the Tile with a certain colour
   highlight(highlightColor, iw) {
     emptySquare(this.pos.x, this.pos.y,
                 this.SIZE, iw || this.SIZE * 0.75,
                 highlightColor);
   }
 
+  // Reset the Tile
   reset(map, mapX, mapY) {
     this.pos = createVector(0, 0);
     this.map = map;
     this.SIZE = this.map.TILE_SIZE;
     this.hasFocus = false;
-    this.col = randomCol();
+    this.col = null;
     this.hitCol = color(0, 0, 255);
     this.unit = null;
     this.mapX = mapX;
@@ -54,15 +60,12 @@ class Tile {
     this.village = null;
   }
 
+  // Set the Unit in this Tile
   setUnit(unit) {
     this.unit = unit;
   }
 
-  moveUnit(tile) {
-    tile.unit = this.unit;
-    this.unit = null;
-  }
-
+  // Set the focus of the Tile
   setFocussed(bool) {
     this.hasFocus = bool;
     if (this.unit) {

@@ -1,11 +1,14 @@
 class Player {
-  constructor(name) {
-    this.name = name;
+  constructor(id) {
+    this.id = id
     this.units = []
+    this.colour = null;
+    this.moved = false;
+    this.lost = false;
+    this.village = null;
   }
 
-  addUnit(unit) {
-    this.units.push();
+  setVillage(village) {
+    this.village = village;
   }
-
 }

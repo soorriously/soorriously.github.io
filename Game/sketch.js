@@ -1,8 +1,10 @@
 // Map variable
 let m;
-// let u;
+
+// variable is true when the mouse is being dragged
 let dragging = false;
-let unitInfo = {};
+
+// JavaScript object containing all fonts, images and sounds used
 let fonts = {
   objective: {
     regular: null,
@@ -20,10 +22,19 @@ let img = {
   horseman: null,
   village: null
 }
-let logo;
-let bg;
+let sounds = {
+  bgMusic: null
+}
 
+// The number of players in the game
+let numPlayers = 4;
+
+// the winner of the game
+let winner = null;
+
+// Called once before the canvas loads
 function preload() {
+  // loads all assets
   for (let font in fonts) {
     for (let style in fonts[font]) {
       fonts[font][style] = loadFont(`/Fonts/${font}-${style}.otf`)
@@ -32,50 +43,56 @@ function preload() {
   for (let image in img) {
     img[image] = loadImage(`Images/${image}.png`);
   }
-  logo = loadImage("Images/logo.png");
-  bg = loadImage("Images/bg.png");
-  // house = loadImage("/Images/house.png", function() {
-  //   console.log("Done loading after " + floor(millis()) + "ms");
-  // });
-}
-
-function setup() {
-  cnv = createCanvas(windowWidth, windowHeight);
-  frameRate(60);
-  m = new Map(11, 100);
-  m.createUnit(0, 0, "horseman", 'poop');
-  m.createUnit(4, 4, "warrior", 'popo');
-  for (let type in unitTypes) {
-    unitInfo[type] = objToInfo(unitTypes[type], type);
+  for (let sound in sounds) {
+    sounds[sound] = loadSound(`sounds/${sound}.mp3`);
   }
-  screens.current = 'Game';
-
 }
 
+// Called once after the page is loaded
+function setup() {
+  // Create the canvas to fill the window
+  cnv = createCanvas(windowWidth, windowHeight);
+  // Set maximum framerate to 120 fps
+  frameRate(120);
+  // Set the current screen to the main menu
+  screens.current = 'MainMenu';
+
+  // Start playing the background music
+  sounds.bgMusic.loop();
+}
+
+// Continous loop
 function draw() {
   background(0);
   screens.showCurrent();
 }
 
+// Function called when the window is resized
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   screens.currentScreen.resizeElt();
 }
 
+// Function called when the mouse is pressed
 function mousePressed() {
-  m.mouse = createVector(mouseX, mouseY);
-  m.pOffset.set(m.offset);
+  // Only pan the map if it exists
+  if (m) {
+    m.mouse = createVector(mouseX, mouseY);
+    m.pOffset.set(m.offset);
+  }
 }
 
+// Function called if the mouse is pressed and is moving
 function mouseDragged() {
   dragging = true;
-  m.pan();
+  if (m) m.pan();
 }
 
+// Function called if the mouse is released after being pressed
 function mouseClicked() {
   screens.onClick();
   if (!dragging) {
-    m.checkFocus();
+    if (m) m.checkFocus();
   }
   dragging = false;
 }
