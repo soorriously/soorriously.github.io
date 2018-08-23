@@ -610,7 +610,6 @@ class Unit {
         this.player.moved = true;
         if (tile.village) {
           if (tile.village.owner !== this.player) {
-            console.log(this.map.turnCount, "s");
             tile.village.enemyStartTurn = this.map.turnCount;
             tile.village.attackedBy = this.player;
           } else {
@@ -635,7 +634,7 @@ class Unit {
 
   canHit(unit) {
     if (abs(unit.mapX - this.mapX) <= this.info.range &&
-        abs(unit.mapY - this.mapY) <= this.info.movement) {
+        abs(unit.mapY - this.mapY) <= this.info.range) {
       if (unit.player !== this.player) {
         return true;
       }
