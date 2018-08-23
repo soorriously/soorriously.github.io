@@ -211,10 +211,6 @@ class Map {
     this.createUnit(mx-1, my+1, "horseman", player);
   }
 
-  removeVillage(village) {
-
-  }
-
   // Increments the playerTurn variable and if it exceeds the number of players,
   // calls nextTurn()
   nextPlayer() {
