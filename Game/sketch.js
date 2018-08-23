@@ -6,10 +6,6 @@ let dragging = false;
 
 // JavaScript object containing all fonts, images and sounds used
 let fonts = {
-  objective: {
-    regular: null,
-    light: null
-  },
   aquatico: {
     regular: null,
   }
