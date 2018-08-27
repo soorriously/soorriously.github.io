@@ -57,4 +57,4 @@ _Italics_ __bold__ ___bold italics___
 | zebra stripes | are neat      |    $1 |
 
 # SOMETHING UNIMPORTANT
-The quick brown [jump](/Game) foxes over the [doggy](/Testing) laze.
+The quick brown [jump](/Game) foxes over the doggy laze.
