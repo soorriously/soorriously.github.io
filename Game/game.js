@@ -649,7 +649,7 @@ class Unit {
     if (abs(unit.mapX - this.mapX) <= this.info.range &&
         abs(unit.mapY - this.mapY) <= this.info.range) {
       if (unit.player !== this.player) {
-        return true;
+        if (!this.attacked) return true;
       }
       return false
     }
@@ -1313,7 +1313,7 @@ let screens = {
             if (sounds.bgMusic.isPlaying()) {
               sounds.bgMusic.pause();
             } else {
-              sounds.bgMusic.loop();
+              sounds.bgMusic.play();
             }
             let txt = screens.currentScreen.buttons.music.text;
             if (txt === 'ON') {
