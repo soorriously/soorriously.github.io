@@ -1462,7 +1462,7 @@ function preload() {
   // loads all assets
   for (let font in fonts) {
     for (let style in fonts[font]) {
-      fonts[font][style] = loadFont(`/Fonts/${font}-${style}.otf`)
+      fonts[font][style] = loadFont(`Fonts/${font}-${style}.otf`)
     }
   }
   for (let image in img) {
